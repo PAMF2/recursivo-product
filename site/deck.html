@@ -1,0 +1,525 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Recursivo - Seed deck</title>
+<style>
+  @font-face{font-family:"OpenAI Sans";src:url("fonts/OpenAISans-Light.woff2") format("woff2");font-weight:300;font-style:normal;font-display:swap;}
+  @font-face{font-family:"OpenAI Sans";src:url("fonts/OpenAISans-Regular.woff2") format("woff2");font-weight:400;font-style:normal;font-display:swap;}
+  @font-face{font-family:"OpenAI Sans";src:url("fonts/OpenAISans-Medium.woff2") format("woff2");font-weight:500;font-style:normal;font-display:swap;}
+  @font-face{font-family:"OpenAI Sans";src:url("fonts/OpenAISans-Semibold.woff2") format("woff2");font-weight:600;font-style:normal;font-display:swap;}
+  @font-face{font-family:"OpenAI Sans";src:url("fonts/OpenAISans-Bold.woff2") format("woff2");font-weight:700;font-style:normal;font-display:swap;}
+  :root{
+    --bg:#000000;
+    --panel:#0a0a0b;
+    --panel2:#0d0d0f;
+    --line:rgba(255,255,255,.13);
+    --line-soft:rgba(255,255,255,.06);
+    --ink:#f3f2ee;
+    --ink-dim:#c8c6c0;
+    --mut:#8b8a85;
+    --mut-dim:#66655f;
+    --sig:#66d19e;           /* the verified standard / key signal */
+    --sig-dim:rgba(102,209,158,.13);
+    --sig-line:rgba(102,209,158,.40);
+    --accent:var(--sig);
+    --accent-dim:var(--sig-line);
+    --danger:#e8674c;        /* the overclaim / failure gap */
+    --sans:"OpenAI Sans",-apple-system,BlinkMacSystemFont,"Segoe UI",Helvetica,Arial,sans-serif;
+    --mono:"SF Mono",SFMono-Regular,ui-monospace,"Cascadia Mono",Menlo,Consolas,monospace;
+    --r:6px;
+    --r-sm:4px;
+    --maxw:1080px;
+  }
+  *{box-sizing:border-box}
+  html{-webkit-text-size-adjust:100%}
+  body{margin:0;background:var(--bg);color:var(--ink);
+    font-family:var(--sans);line-height:1.5;letter-spacing:-.011em;-webkit-font-smoothing:antialiased;font-feature-settings:"tnum" off}
+  h1,h2,h3,h4{font-family:var(--sans);font-weight:500;letter-spacing:-.022em;line-height:1.04;margin:0}
+  b{font-weight:600;color:var(--ink)}
+  .m{font-family:var(--mono)}
+  ::selection{background:var(--accent);color:#000}
+
+  /* deck mechanics */
+  .deck{height:100vh;overflow-y:scroll;scroll-snap-type:y mandatory;scroll-behavior:smooth;scrollbar-width:none}
+  .deck::-webkit-scrollbar{display:none}
+  .slide{min-height:100vh;height:100vh;scroll-snap-align:start;scroll-snap-stop:always;
+    display:flex;flex-direction:column;justify-content:center;
+    padding:72px max(40px,6vw);position:relative;overflow:hidden;
+    border-top:1px solid transparent}
+  .inner{max-width:var(--maxw);width:100%;margin:0 auto}
+
+  /* corner marks */
+  .brand-mark{position:absolute;top:26px;left:max(40px,6vw);
+    font-family:var(--sans);font-weight:600;font-size:15px;letter-spacing:-.02em;color:var(--ink)}
+  .brand-mark .dot{color:var(--accent)}
+  .snum{position:absolute;top:28px;right:max(40px,6vw);
+    font-family:var(--mono);font-size:12px;color:var(--mut-dim);letter-spacing:.06em}
+
+  /* labels / heads */
+  .kick{font-family:var(--mono);font-size:11.5px;letter-spacing:.14em;text-transform:uppercase;
+    color:var(--accent);font-weight:500;margin-bottom:22px;display:inline-flex;align-items:center;gap:9px}
+  .kick::before{content:"";width:14px;height:1px;background:var(--accent);display:inline-block}
+  .lede{font-family:var(--mono);font-size:11.5px;letter-spacing:.14em;text-transform:uppercase;
+    color:var(--mut);font-weight:500;margin:0 0 24px;display:inline-flex;align-items:center;gap:9px}
+  .lede::before{content:"";width:14px;height:1px;background:var(--mut);display:inline-block}
+  .slide h2{font-size:clamp(27px,3.7vw,44px);margin-bottom:20px;max-width:19ch;letter-spacing:-.03em}
+  .slide h2 .hi{color:var(--accent)}
+  .slide h2 .lo{color:var(--danger)}
+  .sub{color:var(--mut);font-size:clamp(15px,1.6vw,17.5px);max-width:74ch;margin:0;line-height:1.55}
+  .note{color:var(--mut);font-size:14px;margin-top:22px;max-width:88ch;line-height:1.6}
+  .note b{color:var(--ink-dim)}
+  code{font-family:var(--mono);background:var(--panel2);border:1px solid var(--line-soft);
+    padding:2px 7px;border-radius:var(--r-sm);font-size:13px;color:var(--accent)}
+
+  /* progress rail */
+  .rail{position:fixed;right:20px;top:50%;transform:translateY(-50%);display:flex;flex-direction:column;gap:9px;z-index:50}
+  .rail button{width:8px;height:8px;border-radius:1px;border:1px solid var(--mut-dim);background:transparent;padding:0;cursor:pointer;transition:all .16s}
+  .rail button:hover{border-color:var(--mut)}
+  .rail button:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+  .rail button.on{background:var(--accent);border-color:var(--accent);transform:scale(1.15)}
+  .counter{position:fixed;left:24px;bottom:22px;font-family:var(--mono);font-size:12px;color:var(--mut-dim);z-index:50;letter-spacing:.04em}
+  .hint{position:fixed;right:22px;bottom:22px;font-size:11.5px;color:var(--mut-dim);z-index:50;letter-spacing:.02em;font-family:var(--mono)}
+  .hint kbd{font-family:var(--mono);background:var(--panel2);border:1px solid var(--line);border-radius:var(--r-sm);padding:1px 5px;font-size:10.5px;color:var(--mut)}
+  .barfill{position:fixed;top:0;left:0;height:2px;background:var(--accent);z-index:60;transition:width .22s ease;width:0}
+
+  /* cover */
+  .cover h1{font-size:clamp(42px,7.4vw,90px);line-height:.98;margin:20px 0 26px;max-width:15ch;letter-spacing:-.04em;font-weight:500}
+  .cover h1 .a{color:var(--accent)}
+  .cover .tag{font-size:clamp(16px,2vw,21px);color:var(--ink-dim);max-width:60ch;line-height:1.5}
+  .cover .tag b{color:var(--ink)}
+  .cover .stamp{margin-top:46px;padding-top:22px;border-top:1px solid var(--line);
+    font-family:var(--mono);font-size:12.5px;color:var(--mut);display:flex;flex-wrap:wrap;gap:8px 26px}
+  .cover .stamp span{color:var(--ink-dim)}
+
+  /* number cards */
+  .nums{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;margin-top:6px}
+  .n{background:var(--panel);border:1px solid var(--line);border-radius:var(--r);padding:24px 22px;position:relative}
+  .n .v{font-family:var(--mono);font-size:clamp(30px,4.2vw,48px);font-weight:500;letter-spacing:-.03em;line-height:1}
+  .n .l{color:var(--mut);font-size:13px;margin-top:12px;line-height:1.45}
+  .n .l b{color:var(--ink-dim)}
+  .n.base{border-color:var(--sig-line)}
+  .n.base .v{color:var(--accent)}
+  .n.bad .v{color:var(--danger)}
+  .n .tick{position:absolute;top:0;left:0;width:100%;height:2px;background:var(--line)}
+  .n.base .tick{background:var(--accent)}
+  .n.bad .tick{background:var(--danger)}
+
+  /* tables */
+  table{width:100%;border-collapse:collapse;font-size:14.5px;margin-top:4px}
+  th,td{text-align:left;padding:10px 10px;border-bottom:1px solid var(--line-soft)}
+  thead th{color:var(--mut);font-weight:500;font-size:10.5px;letter-spacing:.1em;text-transform:uppercase;
+    font-family:var(--mono);border-bottom:1px solid var(--line)}
+  td.mono{font-family:var(--mono);white-space:nowrap}
+  tr.win td{color:var(--accent);font-weight:600}
+  tr.win td:first-child{color:var(--accent)}
+  .bar{display:inline-block;height:7px;background:var(--danger);border-radius:1px;vertical-align:middle;margin-right:10px;opacity:.9}
+  .bar.g{background:var(--accent)}
+  .bar.n{background:var(--mut-dim)}
+
+  /* players / cells grid */
+  .players{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-top:6px}
+  .pl{background:var(--panel);border:1px solid var(--line);border-radius:var(--r);padding:18px 20px}
+  .pl .name{font-family:var(--sans);font-weight:500;font-size:19px;letter-spacing:-.02em}
+  .pl .val{font-family:var(--mono);color:var(--accent);font-size:13.5px;margin-top:5px}
+  .pl .who{color:var(--mut);font-size:12.5px;margin-top:8px;line-height:1.4}
+
+  /* bullet list */
+  .blist{list-style:none;padding:0;margin:8px 0 0;max-width:92ch}
+  .blist li{padding:14px 0;border-bottom:1px solid var(--line-soft);font-size:16px;display:flex;gap:16px;align-items:baseline;line-height:1.5}
+  .blist li:first-child{border-top:1px solid var(--line-soft)}
+  .blist li .mk{font-family:var(--mono);color:var(--accent);font-size:12.5px;flex:0 0 26px}
+  .blist li span:last-child{color:var(--ink-dim)}
+
+  /* thesis */
+  .thesis{font-family:var(--sans);font-weight:500;font-size:clamp(24px,3.7vw,42px);line-height:1.22;max-width:20ch;letter-spacing:-.03em}
+  .thesis b{color:var(--accent);font-weight:600}
+  .thesis .max{max-width:24ch}
+
+  /* pillars (product, 4-up) */
+  .pillars{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin-top:6px}
+  .pillar{background:var(--panel);border:1px solid var(--line);border-radius:var(--r);padding:22px 20px;display:flex;flex-direction:column}
+  .pillar .idx{font-family:var(--mono);font-size:12px;color:var(--accent);letter-spacing:.04em}
+  .pillar .nm{font-family:var(--sans);font-weight:500;font-size:17.5px;margin:14px 0 4px;letter-spacing:-.02em}
+  .pillar .rl{font-family:var(--mono);font-size:10.5px;letter-spacing:.08em;text-transform:uppercase;color:var(--mut-dim)}
+  .pillar p{margin:12px 0 0;color:var(--mut);font-size:13px;line-height:1.5}
+  .pillar p b{color:var(--ink-dim)}
+
+  /* steps */
+  .steps{display:grid;grid-template-columns:repeat(4,1fr);gap:0;margin-top:6px;border:1px solid var(--line);border-radius:var(--r);overflow:hidden}
+  .step{padding:22px 20px;border-right:1px solid var(--line);background:var(--panel)}
+  .step:last-child{border-right:none}
+  .step .k{font-family:var(--mono);color:var(--accent);font-size:12px;letter-spacing:.04em}
+  .step h4{margin:12px 0 6px;font-size:17px;letter-spacing:-.02em}
+  .step p{margin:0;color:var(--mut);font-size:13px;line-height:1.5}
+
+  /* flywheel */
+  .flow{display:flex;align-items:stretch;gap:0;margin-top:8px;flex-wrap:wrap}
+  .fnode{flex:1;min-width:150px;background:var(--panel);border:1px solid var(--line);border-radius:var(--r);padding:18px 16px}
+  .fnode .fk{font-family:var(--mono);font-size:11px;color:var(--accent);letter-spacing:.06em}
+  .fnode .ft{font-family:var(--sans);font-weight:500;font-size:15.5px;margin:9px 0 5px;letter-spacing:-.02em}
+  .fnode p{margin:0;color:var(--mut);font-size:12px;line-height:1.45}
+  .farrow{display:flex;align-items:center;justify-content:center;color:var(--mut-dim);font-family:var(--mono);font-size:16px;padding:0 6px}
+
+  /* generic 2-col cards */
+  .grid2{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-top:6px}
+  .card{background:var(--panel);border:1px solid var(--line);border-radius:var(--r);padding:22px}
+  .card .tg{display:inline-block;font-family:var(--mono);font-size:10.5px;font-weight:500;
+    color:var(--accent);letter-spacing:.08em;text-transform:uppercase;margin-bottom:11px;
+    border:1px solid var(--accent-dim);padding:2px 7px;border-radius:var(--r-sm)}
+  .card h3{font-size:19px;margin-bottom:8px;letter-spacing:-.02em}
+  .card p{margin:0;color:var(--mut);font-size:13.5px;line-height:1.5}
+  .card p b{color:var(--ink-dim)}
+
+  /* ask */
+  .ask{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-top:8px}
+  .ask .a{background:var(--panel);border:1px solid var(--line);border-radius:var(--r);padding:24px}
+  .ask .a .t{font-family:var(--mono);font-size:10.5px;letter-spacing:.1em;text-transform:uppercase;color:var(--mut);font-weight:500}
+  .ask .a .b{font-family:var(--sans);font-size:20px;font-weight:500;margin-top:12px;letter-spacing:-.02em;line-height:1.2}
+  .ask .a .b span{color:var(--accent)}
+
+  .twocol{display:grid;grid-template-columns:1.05fr .95fr;gap:34px;align-items:start}
+  .twocol .col-r{padding-top:2px}
+
+  @media(max-width:900px){
+    .nums,.players,.steps,.ask,.pillars{grid-template-columns:1fr 1fr}
+    .steps{border-radius:var(--r)}
+    .step{border-right:none;border-bottom:1px solid var(--line)}
+    .grid2,.twocol{grid-template-columns:1fr}
+    .flow{flex-direction:column}
+    .farrow{transform:rotate(90deg);padding:4px 0}
+    .slide{padding:76px 26px}
+    .rail,.hint{display:none}
+  }
+</style>
+</head>
+<body>
+
+<div class="barfill" id="barfill"></div>
+
+<div class="deck" id="deck">
+
+  <!-- 1. COVER -->
+  <section class="slide cover" data-title="Cover">
+    <span class="brand-mark">Recursivo<span class="dot">.</span></span>
+    <span class="snum">01 / 13</span>
+    <div class="inner">
+      <div class="kick">Seed round / 2026</div>
+      <h1>The <span class="a">verification layer</span> for human behavior simulation.</h1>
+      <p class="tag">A $2B+ category sells AI stand-ins for real customers. Nobody checks if they are right.
+        We built the ruler that does. Then we use it to train the model that wins.</p>
+      <div class="stamp">
+        <span>RecursivoBench v1 - live</span>
+        <span>2,058 real people</span>
+        <span>Verify API + AlphaPrediction shipped</span>
+      </div>
+    </div>
+  </section>
+
+  <!-- 2. THE TURN -->
+  <section class="slide" data-title="The turn">
+    <span class="snum">02 / 13</span>
+    <div class="inner">
+      <p class="lede">The turn</p>
+      <h2>Over <span class="hi">$3.5B</span> is racing to simulate humans. Every player claims accuracy. None can prove it.</h2>
+      <div class="players">
+        <div class="pl"><div class="name">Simile</div><div class="val">$2B / Series B, $200M raised</div><div class="who">Greenoaks, Index, Fei-Fei Li, Karpathy</div></div>
+        <div class="pl"><div class="name">Aaru</div><div class="val">~$1B</div><div class="who">Redpoint</div></div>
+        <div class="pl"><div class="name">Humans&amp;</div><div class="val">$480M raised / $4.48B valuation</div><div class="who">Bezos, Nvidia</div></div>
+      </div>
+      <p class="note">The pitch is identical everywhere: synthetic respondents that stand in for real customers,
+        priced per agent, sold as a replacement for market research. The category has capital, momentum, and
+        named backers. It is missing one thing: <b>an independent way to tell if any of it is true</b>.</p>
+    </div>
+  </section>
+
+  <!-- 3. THE PROBLEM -->
+  <section class="slide" data-title="The problem">
+    <span class="snum">03 / 13</span>
+    <div class="inner">
+      <p class="lede">The problem</p>
+      <h2>Accuracy is <span class="lo">self reported</span>, contested, and has no ruler.</h2>
+      <ul class="blist">
+        <li><span class="mk">01</span><span>Vendors sell <b>agentic twins</b> that claim to replace research, and charge by the number of agents.</span></li>
+        <li><span class="mk">02</span><span>Accuracy claims of <b>85 to 99%</b> are <b>auto reported</b>. The vendor grades its own homework.</span></li>
+        <li><span class="mk">03</span><span>No peer review. No independent, cross product benchmark. No apples to apples comparison exists.</span></li>
+        <li><span class="mk">04</span><span>The #1 buyer question, <b>"prove it is right"</b>, has no answer in the market today.</span></li>
+      </ul>
+      <p class="note">A whole category is being underwritten on numbers nobody outside the seller has ever checked.</p>
+    </div>
+  </section>
+
+  <!-- 4. THE BOMB -->
+  <section class="slide" data-title="The bomb">
+    <span class="snum">04 / 13</span>
+    <div class="inner">
+      <p class="lede">RecursivoBench v1 / Twin-2K-500, 2,058 real people, arXiv 2505.17479, 46 held-out items</p>
+      <h2>The best simulator scores <span class="lo">0.360</span>. A dumb constant guess scores <span class="hi">0.583</span>.</h2>
+      <div class="twocol">
+        <div class="col-l">
+          <table>
+            <thead><tr><th>Simulator (individual accuracy)</th><th>Score</th></tr></thead>
+            <tbody>
+              <tr class="win"><td>Majority class (constant guess)</td><td class="mono"><span class="bar g" style="width:200px"></span>0.583</td></tr>
+              <tr><td>Claude (our session)</td><td class="mono"><span class="bar" style="width:185px"></span>0.539</td></tr>
+              <tr><td>GPT-4.1, full persona</td><td class="mono"><span class="bar" style="width:123px"></span>0.360</td></tr>
+              <tr><td>GPT-4.1-mini, demographics only</td><td class="mono"><span class="bar" style="width:113px"></span>0.328</td></tr>
+              <tr><td>GPT-4.1-mini, full persona</td><td class="mono"><span class="bar" style="width:103px"></span>0.299</td></tr>
+            </tbody>
+          </table>
+          <p class="note">Graded independently against real held-out answers. Every model loses to a one line
+            baseline. GPT-4.1 quotes <b>0.607 group-level</b> as if it were individual.</p>
+        </div>
+        <div class="col-r">
+          <table>
+            <thead><tr><th>SimBench, group-level, best-of-60</th><th>Score</th></tr></thead>
+            <tbody>
+              <tr><td>Claude 3.7 Sonnet</td><td class="mono"><span class="bar n" style="width:180px"></span>0.408</td></tr>
+              <tr><td>DeepSeek-R1</td><td class="mono"><span class="bar n" style="width:152px"></span>0.345</td></tr>
+              <tr><td>Llama-3.1-405B</td><td class="mono"><span class="bar n" style="width:125px"></span>0.284</td></tr>
+              <tr><td>Qwen2.5-72B</td><td class="mono"><span class="bar n" style="width:122px"></span>0.276</td></tr>
+            </tbody>
+          </table>
+          <p class="note">Independent corroboration. arXiv 2510.17516. Even at group-level with 60 tries,
+            frontier models top out around <b>0.41</b>. The gap is structural, not a tuning problem.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 5. WHY IT MATTERS -->
+  <section class="slide" data-title="Why it matters">
+    <span class="snum">05 / 13</span>
+    <div class="inner">
+      <p class="lede">Why it matters</p>
+      <h2>Group-level is not individual. Buyers bet real decisions on the inflated number.</h2>
+      <ul class="blist">
+        <li><span class="mk">A</span><span>Predicting the <b>crowd average</b> (~0.60) is an easier task than predicting <b>one person</b> (0.36). The category quietly blurs the two.</span></li>
+        <li><span class="mk">B</span><span>More context did <b>not</b> help. GPT-4.1-mini full persona (0.299) scored <b>below</b> demographics only (0.328).</span></li>
+        <li><span class="mk">C</span><span>Accuracy swings <b>+8.7 points</b> across age groups. Real gaps hide behind a single headline number.</span></li>
+      </ul>
+      <table>
+        <thead><tr><th>Age group</th><th>Individual accuracy (persona-LLM baseline)</th></tr></thead>
+        <tbody>
+          <tr><td>50 to 64</td><td class="mono"><span class="bar" style="width:190px"></span>47.8%</td></tr>
+          <tr><td>30 to 49</td><td class="mono"><span class="bar" style="width:161px"></span>40.4%</td></tr>
+          <tr><td>18 to 29</td><td class="mono"><span class="bar" style="width:157px"></span>39.6%</td></tr>
+          <tr><td>65+</td><td class="mono"><span class="bar" style="width:155px"></span>39.1%</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </section>
+
+  <!-- 6. THESIS -->
+  <section class="slide" data-title="Thesis">
+    <span class="snum">06 / 13</span>
+    <div class="inner">
+      <p class="lede">Our thesis</p>
+      <p class="thesis max">Simulating human behavior only has value where the prediction is
+        <b>verified against reality</b>. Today no one verifies it. The ruler that measures is the ruler that trains,
+        and <b>recursion only compounds where the outcome is verifiable.</b></p>
+      <p class="note" style="margin-top:34px">Whoever owns verified ground truth owns the loop: measure the field,
+        train the model against truth, log every new prediction, grade it against what actually happened. That loop is the company.</p>
+    </div>
+  </section>
+
+  <!-- 7. PRODUCT / FOUR PILLARS -->
+  <section class="slide" data-title="Product">
+    <span class="snum">07 / 13</span>
+    <div class="inner">
+      <p class="lede">The product / four pillars</p>
+      <h2>Measure the field. Grade any model. Then win the race with our own.</h2>
+      <div class="pillars">
+        <div class="pillar">
+          <div class="idx">01</div>
+          <div class="rl">The referee</div>
+          <div class="nm">RecursivoBench</div>
+          <p>Independent, open benchmark. Every human behavior simulator graded against <b>real, held-out people</b>, by segment and calibration. Whoever owns the ruler owns the category.</p>
+        </div>
+        <div class="pillar">
+          <div class="idx">02</div>
+          <div class="rl">The arms dealer</div>
+          <div class="nm">Recursivo Verify</div>
+          <p>An API that grades any simulator, a vendor's or your own. <code>POST /verify</code> returns individual, group-level, and exactly where it breaks.</p>
+        </div>
+        <div class="pillar">
+          <div class="idx">03</div>
+          <div class="rl">The moat model</div>
+          <div class="nm">AlphaPrediction</div>
+          <p>Our frontier <b>brain models</b> that predict human behavior, trained and selected against verified ground truth. In the spirit of AlphaFold and AlphaProof: the ruler trains the winner.</p>
+        </div>
+        <div class="pillar">
+          <div class="idx">04</div>
+          <div class="rl">The flywheel</div>
+          <div class="nm">Open Predictions</div>
+          <p>A public registry where predictions are logged, then graded against what actually happens. Every graded prediction compounds into the <b>largest verified dataset of human behavior</b>.</p>
+        </div>
+      </div>
+      <p class="note">Bench earns trust and distribution. Verify monetizes it. AlphaPrediction turns the ground truth
+        into a model no one else can train. Open Predictions makes the dataset grow on its own.</p>
+    </div>
+  </section>
+
+  <!-- 8. HOW IT WORKS -->
+  <section class="slide" data-title="How it works">
+    <span class="snum">08 / 13</span>
+    <div class="inner">
+      <p class="lede">How it works</p>
+      <h2>Predict, grade, segment, compound.</h2>
+      <div class="steps">
+        <div class="step"><div class="k">01</div><h4>Predict</h4><p>A simulator answers as a real, held-out person would.</p></div>
+        <div class="step"><div class="k">02</div><h4>Grade</h4><p>Compare to that person's real answer. Individual and distributional.</p></div>
+        <div class="step"><div class="k">03</div><h4>Segment</h4><p>Break accuracy down by subgroup and question type. Expose the gaps.</p></div>
+        <div class="step"><div class="k">04</div><h4>Compound</h4><p>Feed the verified signal back to train a model that actually wins.</p></div>
+      </div>
+      <p class="note">The same ground truth that grades a simulator is the reward that trains a better one.
+        The loop only closes because grading is real.</p>
+    </div>
+  </section>
+
+  <!-- 9. UNFAIR EDGE -->
+  <section class="slide" data-title="Unfair edge">
+    <span class="snum">09 / 13</span>
+    <div class="inner">
+      <p class="lede">The unfair edge</p>
+      <h2>The category has no loop. We already built the engine.</h2>
+      <ul class="blist">
+        <li><span class="mk">+</span><span><b>OpenEvolve</b>. Evolutionary search over simulators, gains gated on verified accuracy.</span></li>
+        <li><span class="mk">+</span><span><b>RLVR</b>. Reinforcement learning from verifiable rewards. The grade is the reward.</span></li>
+        <li><span class="mk">+</span><span><b>loop-engineering</b>. The autonomous verify-and-improve harness that runs it end to end.</span></li>
+        <li><span class="mk">+</span><span><b>orchestrator</b>. Runs the whole thing at scale, unattended.</span></li>
+      </ul>
+      <p class="note">Together this is the <b>verify-and-improve motor</b> the category does not have.
+        Vendors optimize toward numbers they report themselves. AlphaPrediction optimizes toward numbers reality confirms.
+        The ruler that measures is the ruler that trains.</p>
+    </div>
+  </section>
+
+  <!-- 10. OPEN PREDICTIONS / MOAT -->
+  <section class="slide" data-title="Open Predictions">
+    <span class="snum">10 / 13</span>
+    <div class="inner">
+      <p class="lede">The compounding moat</p>
+      <h2>Open Predictions turns every graded call into permanent, verified data.</h2>
+      <div class="flow">
+        <div class="fnode"><div class="fk">01</div><div class="ft">Log</div><p>Any model logs a prediction about real human behavior, publicly and timestamped.</p></div>
+        <div class="farrow">&#8594;</div>
+        <div class="fnode"><div class="fk">02</div><div class="ft">Grade</div><p>Reality arrives. The prediction is scored against what actually happened.</p></div>
+        <div class="farrow">&#8594;</div>
+        <div class="fnode"><div class="fk">03</div><div class="ft">Verify</div><p>Each graded pair joins the largest verified dataset of human behavior.</p></div>
+        <div class="farrow">&#8594;</div>
+        <div class="fnode"><div class="fk">04</div><div class="ft">Train</div><p>AlphaPrediction trains on that dataset. Better model, more predictions logged.</p></div>
+      </div>
+      <p class="note">Benchmarks can be copied. A public, growing archive of predictions graded against reality cannot.
+        The dataset is the moat, and it is the one asset that gets stronger every time the category runs.</p>
+    </div>
+  </section>
+
+  <!-- 11. MARKET / WHY NOW -->
+  <section class="slide" data-title="Why now">
+    <span class="snum">11 / 13</span>
+    <div class="inner">
+      <p class="lede">Market / why now</p>
+      <h2>A <span class="hi">$140 to 153B</span> insights market is being rebuilt on simulation. Timing is now.</h2>
+      <div class="nums">
+        <div class="n base"><span class="tick"></span><div class="v">$140-153B</div><div class="l">Global insights and market research spend, the base being replaced (ESOMAR)</div></div>
+        <div class="n bad"><span class="tick"></span><div class="v">$3.5B+</div><div class="l">Disclosed funding into human simulation, <b>Simile $2B, Aaru ~$1B, Humans&amp; $480M</b></div></div>
+        <div class="n"><span class="tick"></span><div class="v">0</div><div class="l">Independent verification layers in the market. The ruler does not exist yet</div></div>
+      </div>
+      <p class="note">Capital, buyers, and a $150B budget are all moving at once, while accuracy stays unproven.
+        As spend scales, the gap between self-reported and verified accuracy becomes the industry's central risk.
+        The moment to own the ruler is before the incumbents grade themselves into permanence.</p>
+    </div>
+  </section>
+
+  <!-- 12. TRACTION -->
+  <section class="slide" data-title="Traction">
+    <span class="snum">12 / 13</span>
+    <div class="inner">
+      <p class="lede">Traction / already shipped</p>
+      <h2>The bench runs. The API works. The model trains against truth.</h2>
+      <div class="grid2">
+        <div class="card"><span class="tg">Shipped</span><h3>RecursivoBench v1</h3><p>Running on Twin-2K-500 (arXiv 2505.17479), 46 held-out items, graded independently against <b>2,058 real people</b>.</p></div>
+        <div class="card"><span class="tg">Shipped</span><h3>Recursivo Verify API</h3><p>Plug in any simulator. <code>POST /verify</code> returns honest accuracy: individual, group-level, and by segment.</p></div>
+        <div class="card"><span class="tg">Shipped</span><h3>Multi-model leaderboard</h3><p>GPT-4.1 family, Claude, and SimBench frontier models scored apples to apples. Not a sampled demo.</p></div>
+        <div class="card"><span class="tg">Proven</span><h3>AlphaPrediction, the result</h3><p>Best model 0.360 vs baseline 0.583, a reproducible finding the category cannot refute, and the target our own loop trains against.</p></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 13. ASK / VISION -->
+  <section class="slide" data-title="Ask">
+    <span class="snum">13 / 13</span>
+    <div class="inner">
+      <p class="lede">The ask / the vision</p>
+      <h2>Own the loop: measure the field, train the verified model, own the open dataset.</h2>
+      <div class="ask">
+        <div class="a"><div class="t">Referee</div><div class="b">The <span>benchmark</span> the category is graded on.</div></div>
+        <div class="a"><div class="t">Arms dealer</div><div class="b">The <span>Verify API</span> every buyer runs first.</div></div>
+        <div class="a"><div class="t">Moat</div><div class="b"><span>AlphaPrediction</span> + <span>Open Predictions</span>, the model and the dataset no one can copy.</div></div>
+      </div>
+      <p class="note">A $3.5B+ category is betting real decisions on numbers no one verifies, inside a $140B+ market.
+        We are raising a seed to make Recursivo the independent authority that measures it, and the compounding loop that wins it.</p>
+      <div class="stamp" style="margin-top:34px;padding-top:22px;border-top:1px solid var(--line);font-family:var(--mono);font-size:12.5px;color:var(--mut)">Recursivo. The verification layer for human behavior simulation.</div>
+    </div>
+  </section>
+
+</div>
+
+<div class="rail" id="rail"></div>
+<div class="counter" id="counter">01 / 13</div>
+<div class="hint"><kbd>&#8594;</kbd> next &nbsp; <kbd>&#8592;</kbd> prev</div>
+
+<script>
+(function(){
+  var deck=document.getElementById('deck');
+  var slides=Array.prototype.slice.call(deck.querySelectorAll('.slide'));
+  var rail=document.getElementById('rail');
+  var counter=document.getElementById('counter');
+  var barfill=document.getElementById('barfill');
+  var total=slides.length;
+  var current=0;
+  var pad=function(n){return (n<9?'0':'')+(n+1);};
+
+  slides.forEach(function(s,i){
+    var b=document.createElement('button');
+    b.setAttribute('aria-label','Slide '+(i+1)+': '+(s.dataset.title||''));
+    b.addEventListener('click',function(){go(i);});
+    rail.appendChild(b);
+  });
+  var dots=Array.prototype.slice.call(rail.children);
+
+  function setActive(i){
+    current=i;
+    dots.forEach(function(d,j){d.classList.toggle('on',j===i);});
+    counter.textContent=pad(i)+' / '+pad(total-1);
+    barfill.style.width=((i)/(total-1)*100)+'%';
+  }
+  function go(i){
+    i=Math.max(0,Math.min(total-1,i));
+    slides[i].scrollIntoView({behavior:'smooth',block:'start'});
+    setActive(i);
+  }
+
+  var obs=new IntersectionObserver(function(entries){
+    entries.forEach(function(e){
+      if(e.isIntersecting && e.intersectionRatio>=0.5){
+        setActive(slides.indexOf(e.target));
+      }
+    });
+  },{root:deck,threshold:[0.5,0.75]});
+  slides.forEach(function(s){obs.observe(s);});
+
+  window.addEventListener('keydown',function(e){
+    if(e.key==='ArrowRight'||e.key==='ArrowDown'||e.key===' '||e.key==='PageDown'){e.preventDefault();go(current+1);}
+    else if(e.key==='ArrowLeft'||e.key==='ArrowUp'||e.key==='PageUp'){e.preventDefault();go(current-1);}
+    else if(e.key==='Home'){e.preventDefault();go(0);}
+    else if(e.key==='End'){e.preventDefault();go(total-1);}
+  });
+
+  setActive(0);
+})();
+</script>
+</body>
+</html>

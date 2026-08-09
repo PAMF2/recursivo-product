@@ -1,0 +1,1410 @@
+{
+ "Q157": {
+  "options": [
+   "I favor program A",
+   "I favor program B",
+   "I slightly favor program A",
+   "I slightly favor program B",
+   "I strongly favor program A",
+   "I strongly favor program B"
+  ],
+  "n_aligned": 1000,
+  "predicted_distribution": {
+   "I favor program A": 0.743,
+   "I strongly favor program A": 0.231,
+   "I slightly favor program A": 0.024,
+   "I favor program B": 0.001,
+   "I slightly favor program B": 0.001
+  },
+  "human_distribution": {
+   "I favor program A": 0.307,
+   "I slightly favor program A": 0.295,
+   "I slightly favor program B": 0.164,
+   "I strongly favor program A": 0.128,
+   "I favor program B": 0.085,
+   "I strongly favor program B": 0.021
+  },
+  "verified": {
+   "individual": 0.263,
+   "group_level": 0.461,
+   "by_age": {
+    "18-29": 0.263,
+    "30-49": 0.227,
+    "50-64": 0.271,
+    "65+": 0.336
+   }
+  }
+ },
+ "Q158": {
+  "options": [
+   "I favor program A",
+   "I favor program B",
+   "I slightly favor program A",
+   "I slightly favor program B",
+   "I strongly favor program A",
+   "I strongly favor program B"
+  ],
+  "n_aligned": 1050,
+  "predicted_distribution": {
+   "I slightly favor program A": 0.3162,
+   "I slightly favor program B": 0.3038,
+   "I favor program A": 0.2533,
+   "I favor program B": 0.0771,
+   "I strongly favor program A": 0.0476,
+   "I strongly favor program B": 0.0019
+  },
+  "human_distribution": {
+   "I slightly favor program B": 0.3571,
+   "I slightly favor program A": 0.2181,
+   "I favor program B": 0.2048,
+   "I favor program A": 0.1181,
+   "I strongly favor program B": 0.0629,
+   "I strongly favor program A": 0.039
+  },
+  "verified": {
+   "individual": 0.254,
+   "group_level": 0.758,
+   "by_age": {
+    "18-29": 0.221,
+    "30-49": 0.288,
+    "50-64": 0.241,
+    "65+": 0.24
+   }
+  }
+ },
+ "Q159_1": {
+  "options": [
+   "Extremely improbable",
+   "Extremely probable",
+   "Moderately probable",
+   "Somewhat probable",
+   "Very improbable",
+   "Very probable"
+  ],
+  "n_aligned": 1023,
+  "predicted_distribution": {
+   "Somewhat probable": 0.958,
+   "Moderately probable": 0.0264,
+   "Very improbable": 0.0156
+  },
+  "human_distribution": {
+   "Somewhat probable": 0.392,
+   "Moderately probable": 0.2874,
+   "Very probable": 0.1427,
+   "Very improbable": 0.1193,
+   "Extremely improbable": 0.0313,
+   "Extremely probable": 0.0274
+  },
+  "verified": {
+   "individual": 0.391,
+   "group_level": 0.434,
+   "by_age": {
+    "18-29": 0.362,
+    "30-49": 0.422,
+    "50-64": 0.395,
+    "65+": 0.336
+   }
+  }
+ },
+ "Q159_2": {
+  "options": [
+   "Extremely improbable",
+   "Extremely probable",
+   "Moderately probable",
+   "Somewhat probable",
+   "Very improbable",
+   "Very probable"
+  ],
+  "n_aligned": 1023,
+  "predicted_distribution": {
+   "Very probable": 0.5591,
+   "Moderately probable": 0.4409
+  },
+  "human_distribution": {
+   "Somewhat probable": 0.3343,
+   "Moderately probable": 0.2805,
+   "Very probable": 0.1808,
+   "Very improbable": 0.1232,
+   "Extremely improbable": 0.0459,
+   "Extremely probable": 0.0352
+  },
+  "verified": {
+   "individual": 0.231,
+   "group_level": 0.461,
+   "by_age": {
+    "18-29": 0.224,
+    "30-49": 0.246,
+    "50-64": 0.233,
+    "65+": 0.189
+   }
+  }
+ },
+ "Q159_3": {
+  "options": [
+   "Extremely improbable",
+   "Extremely probable",
+   "Moderately probable",
+   "Somewhat probable",
+   "Very improbable",
+   "Very probable"
+  ],
+  "n_aligned": 1023,
+  "predicted_distribution": {
+   "Very improbable": 0.7116,
+   "Somewhat probable": 0.1701,
+   "Moderately probable": 0.1183
+  },
+  "human_distribution": {
+   "Somewhat probable": 0.3793,
+   "Very improbable": 0.3773,
+   "Extremely improbable": 0.1251,
+   "Moderately probable": 0.0948,
+   "Very probable": 0.0166,
+   "Extremely probable": 0.0068
+  },
+  "verified": {
+   "individual": 0.33,
+   "group_level": 0.642,
+   "by_age": {
+    "18-29": 0.306,
+    "30-49": 0.285,
+    "50-64": 0.389,
+    "65+": 0.336
+   }
+  }
+ },
+ "Q160_1": {
+  "options": [
+   "Extremely improbable",
+   "Extremely probable",
+   "Moderately probable",
+   "Somewhat probable",
+   "Very improbable",
+   "Very probable"
+  ],
+  "n_aligned": 1027,
+  "predicted_distribution": {
+   "Somewhat probable": 0.8267,
+   "Very improbable": 0.1733
+  },
+  "human_distribution": {
+   "Somewhat probable": 0.4051,
+   "Moderately probable": 0.261,
+   "Very improbable": 0.1675,
+   "Very probable": 0.1061,
+   "Extremely improbable": 0.0409,
+   "Extremely probable": 0.0195
+  },
+  "verified": {
+   "individual": 0.388,
+   "group_level": 0.573,
+   "by_age": {
+    "18-29": 0.354,
+    "30-49": 0.386,
+    "50-64": 0.372,
+    "65+": 0.464
+   }
+  }
+ },
+ "Q160_2": {
+  "options": [
+   "Extremely improbable",
+   "Extremely probable",
+   "Moderately probable",
+   "Somewhat probable",
+   "Very improbable",
+   "Very probable"
+  ],
+  "n_aligned": 1027,
+  "predicted_distribution": {
+   "Moderately probable": 0.8374,
+   "Somewhat probable": 0.1626
+  },
+  "human_distribution": {
+   "Somewhat probable": 0.3603,
+   "Moderately probable": 0.2697,
+   "Very improbable": 0.1461,
+   "Very probable": 0.1324,
+   "Extremely improbable": 0.0643,
+   "Extremely probable": 0.0273
+  },
+  "verified": {
+   "individual": 0.279,
+   "group_level": 0.432,
+   "by_age": {
+    "18-29": 0.323,
+    "30-49": 0.284,
+    "50-64": 0.249,
+    "65+": 0.275
+   }
+  }
+ },
+ "Q160_3": {
+  "options": [
+   "Extremely improbable",
+   "Extremely probable",
+   "Moderately probable",
+   "Somewhat probable",
+   "Very improbable",
+   "Very probable"
+  ],
+  "n_aligned": 1027,
+  "predicted_distribution": {
+   "Very probable": 0.5871,
+   "Extremely probable": 0.409,
+   "Moderately probable": 0.0039
+  },
+  "human_distribution": {
+   "Somewhat probable": 0.3496,
+   "Moderately probable": 0.258,
+   "Very improbable": 0.1704,
+   "Very probable": 0.1353,
+   "Extremely improbable": 0.0536,
+   "Extremely probable": 0.0331
+  },
+  "verified": {
+   "individual": 0.095,
+   "group_level": 0.172,
+   "by_age": {
+    "18-29": 0.104,
+    "30-49": 0.08,
+    "50-64": 0.11,
+    "65+": 0.092
+   }
+  }
+ },
+ "Q161": {
+  "options": [
+   "Clearly correct, an excellent decision",
+   "Correct, all things considered",
+   "Correct, but the opposite would be reasonable too",
+   "Incorrect, a very bad decision",
+   "Incorrect, all things considered",
+   "Incorrect, but not unreasonable",
+   "The decision and its opposite are equally good"
+  ],
+  "n_aligned": 982,
+  "predicted_distribution": {
+   "Correct, all things considered": 0.6161,
+   "Correct, but the opposite would be reasonable too": 0.3839
+  },
+  "human_distribution": {
+   "Correct, all things considered": 0.5265,
+   "Correct, but the opposite would be reasonable too": 0.2077,
+   "Clearly correct, an excellent decision": 0.1487,
+   "The decision and its opposite are equally good": 0.0672,
+   "Incorrect, but not unreasonable": 0.0346,
+   "Incorrect, all things considered": 0.0132,
+   "Incorrect, a very bad decision": 0.002
+  },
+  "verified": {
+   "individual": 0.413,
+   "group_level": 0.734,
+   "by_age": {
+    "18-29": 0.457,
+    "30-49": 0.406,
+    "50-64": 0.389,
+    "65+": 0.431
+   }
+  }
+ },
+ "Q162": {
+  "options": [
+   "Clearly correct, an excellent decision",
+   "Correct, all things considered",
+   "Correct, but the opposite would be reasonable too",
+   "Incorrect, a very bad decision",
+   "Incorrect, all things considered",
+   "Incorrect, but not unreasonable",
+   "The decision and its opposite are equally good"
+  ],
+  "n_aligned": 978,
+  "predicted_distribution": {
+   "Correct, all things considered": 0.8129,
+   "Correct, but the opposite would be reasonable too": 0.1871
+  },
+  "human_distribution": {
+   "Correct, all things considered": 0.4877,
+   "Correct, but the opposite would be reasonable too": 0.2106,
+   "Incorrect, but not unreasonable": 0.1339,
+   "The decision and its opposite are equally good": 0.0777,
+   "Clearly correct, an excellent decision": 0.0389,
+   "Incorrect, all things considered": 0.0256,
+   "Incorrect, a very bad decision": 0.0256
+  },
+  "verified": {
+   "individual": 0.44,
+   "group_level": 0.675,
+   "by_age": {
+    "18-29": 0.38,
+    "30-49": 0.45,
+    "50-64": 0.455,
+    "65+": 0.46
+   }
+  }
+ },
+ "Q163": {
+  "options": [
+   "fewer",
+   "more"
+  ],
+  "n_aligned": 997,
+  "predicted_distribution": {
+   "more": 1.0
+  },
+  "human_distribution": {
+   "more": 0.7994,
+   "fewer": 0.2006
+  },
+  "verified": {
+   "individual": 0.799,
+   "group_level": 0.799,
+   "by_age": {
+    "18-29": 0.792,
+    "30-49": 0.759,
+    "50-64": 0.834,
+    "65+": 0.827
+   }
+  }
+ },
+ "Q165": {
+  "options": [
+   "fewer",
+   "more"
+  ],
+  "n_aligned": 1050,
+  "predicted_distribution": {
+   "fewer": 0.999,
+   "more": 0.001
+  },
+  "human_distribution": {
+   "fewer": 0.8143,
+   "more": 0.1857
+  },
+  "verified": {
+   "individual": 0.815,
+   "group_level": 0.815,
+   "by_age": {
+    "18-29": 0.824,
+    "30-49": 0.793,
+    "50-64": 0.852,
+    "65+": 0.784
+   }
+  }
+ },
+ "Q167": {
+  "options": [
+   "less",
+   "more"
+  ],
+  "n_aligned": 1045,
+  "predicted_distribution": {
+   "more": 1.0
+  },
+  "human_distribution": {
+   "more": 0.9435,
+   "less": 0.0565
+  },
+  "verified": {
+   "individual": 0.944,
+   "group_level": 0.944,
+   "by_age": {
+    "18-29": 0.931,
+    "30-49": 0.938,
+    "50-64": 0.962,
+    "65+": 0.93
+   }
+  }
+ },
+ "Q169": {
+  "options": [
+   "less",
+   "more"
+  ],
+  "n_aligned": 1005,
+  "predicted_distribution": {
+   "less": 1.0
+  },
+  "human_distribution": {
+   "less": 0.6886,
+   "more": 0.3114
+  },
+  "verified": {
+   "individual": 0.689,
+   "group_level": 0.689,
+   "by_age": {
+    "18-29": 0.624,
+    "30-49": 0.651,
+    "50-64": 0.749,
+    "65+": 0.733
+   }
+  }
+ },
+ "Q171": {
+  "options": [
+   "Agree a little",
+   "Agree strongly",
+   "Disagree a little",
+   "Disagree strongly",
+   "Neither agree nor disagree"
+  ],
+  "n_aligned": 734,
+  "predicted_distribution": {
+   "Disagree a little": 0.7766,
+   "Disagree strongly": 0.1567,
+   "Neither agree nor disagree": 0.0627,
+   "Agree a little": 0.0041
+  },
+  "human_distribution": {
+   "Disagree strongly": 0.4128,
+   "Disagree a little": 0.267,
+   "Agree a little": 0.1471,
+   "Neither agree nor disagree": 0.124,
+   "Agree strongly": 0.049
+  },
+  "verified": {
+   "individual": 0.324,
+   "group_level": 0.49,
+   "by_age": {
+    "18-29": 0.269,
+    "30-49": 0.342,
+    "50-64": 0.335,
+    "65+": 0.333
+   }
+  }
+ },
+ "Q172": {
+  "options": [
+   "Agree a little",
+   "Agree strongly",
+   "Disagree a little",
+   "Disagree strongly",
+   "Neither agree nor disagree"
+  ],
+  "n_aligned": 668,
+  "predicted_distribution": {
+   "Neither agree nor disagree": 0.5299,
+   "Agree a little": 0.271,
+   "Disagree a little": 0.1841,
+   "Disagree strongly": 0.015
+  },
+  "human_distribution": {
+   "Agree a little": 0.2635,
+   "Agree strongly": 0.2305,
+   "Disagree a little": 0.1916,
+   "Disagree strongly": 0.1871,
+   "Neither agree nor disagree": 0.1272
+  },
+  "verified": {
+   "individual": 0.204,
+   "group_level": 0.59,
+   "by_age": {
+    "18-29": 0.156,
+    "30-49": 0.207,
+    "50-64": 0.22,
+    "65+": 0.225
+   }
+  }
+ },
+ "Q173": {
+  "options": [
+   "Agree a little",
+   "Agree strongly",
+   "Disagree a little",
+   "Disagree strongly",
+   "Neither agree nor disagree"
+  ],
+  "n_aligned": 648,
+  "predicted_distribution": {
+   "Neither agree nor disagree": 0.5509,
+   "Agree a little": 0.2176,
+   "Disagree a little": 0.216,
+   "Disagree strongly": 0.0154
+  },
+  "human_distribution": {
+   "Agree a little": 0.2886,
+   "Disagree strongly": 0.2006,
+   "Disagree a little": 0.2006,
+   "Agree strongly": 0.1605,
+   "Neither agree nor disagree": 0.1497
+  },
+  "verified": {
+   "individual": 0.198,
+   "group_level": 0.583,
+   "by_age": {
+    "18-29": 0.157,
+    "30-49": 0.213,
+    "50-64": 0.188,
+    "65+": 0.237
+   }
+  }
+ },
+ "Q174": {
+  "options": [
+   "Agree a little",
+   "Agree strongly",
+   "Disagree a little",
+   "Disagree strongly",
+   "Neither agree nor disagree"
+  ],
+  "n_aligned": 734,
+  "predicted_distribution": {
+   "Agree a little": 0.7411,
+   "Agree strongly": 0.1076,
+   "Neither agree nor disagree": 0.0886,
+   "Disagree a little": 0.0613,
+   "Disagree strongly": 0.0014
+  },
+  "human_distribution": {
+   "Agree strongly": 0.4183,
+   "Agree a little": 0.342,
+   "Disagree a little": 0.1022,
+   "Neither agree nor disagree": 0.0858,
+   "Disagree strongly": 0.0518
+  },
+  "verified": {
+   "individual": 0.354,
+   "group_level": 0.598,
+   "by_age": {
+    "18-29": 0.352,
+    "30-49": 0.361,
+    "50-64": 0.357,
+    "65+": 0.333
+   }
+  }
+ },
+ "Q175": {
+  "options": [
+   "Agree a little",
+   "Agree strongly",
+   "Disagree a little",
+   "Disagree strongly",
+   "Neither agree nor disagree"
+  ],
+  "n_aligned": 668,
+  "predicted_distribution": {
+   "Agree a little": 0.7111,
+   "Agree strongly": 0.25,
+   "Disagree a little": 0.0225,
+   "Neither agree nor disagree": 0.0165
+  },
+  "human_distribution": {
+   "Agree strongly": 0.5359,
+   "Agree a little": 0.2889,
+   "Neither agree nor disagree": 0.0704,
+   "Disagree a little": 0.0659,
+   "Disagree strongly": 0.0389
+  },
+  "verified": {
+   "individual": 0.374,
+   "group_level": 0.578,
+   "by_age": {
+    "18-29": 0.461,
+    "30-49": 0.394,
+    "50-64": 0.302,
+    "65+": 0.36
+   }
+  }
+ },
+ "Q176": {
+  "options": [
+   "Agree a little",
+   "Agree strongly",
+   "Disagree a little",
+   "Disagree strongly",
+   "Neither agree nor disagree"
+  ],
+  "n_aligned": 648,
+  "predicted_distribution": {
+   "Agree a little": 0.7222,
+   "Agree strongly": 0.2454,
+   "Neither agree nor disagree": 0.0201,
+   "Disagree a little": 0.0123
+  },
+  "human_distribution": {
+   "Agree strongly": 0.5648,
+   "Agree a little": 0.2731,
+   "Disagree a little": 0.0772,
+   "Neither agree nor disagree": 0.0571,
+   "Disagree strongly": 0.0278
+  },
+  "verified": {
+   "individual": 0.417,
+   "group_level": 0.551,
+   "by_age": {
+    "18-29": 0.461,
+    "30-49": 0.468,
+    "50-64": 0.384,
+    "65+": 0.323
+   }
+  }
+ },
+ "Q177": {
+  "options": [
+   "likely",
+   "somewhat likely",
+   "somewhat unlikely",
+   "unlikely",
+   "very likely",
+   "very unlikely"
+  ],
+  "n_aligned": 734,
+  "predicted_distribution": {
+   "likely": 0.5668,
+   "somewhat likely": 0.2793,
+   "very likely": 0.1035,
+   "somewhat unlikely": 0.0354,
+   "unlikely": 0.015
+  },
+  "human_distribution": {
+   "very likely": 0.2698,
+   "somewhat likely": 0.2561,
+   "likely": 0.2275,
+   "somewhat unlikely": 0.1199,
+   "unlikely": 0.0736,
+   "very unlikely": 0.0531
+  },
+  "verified": {
+   "individual": 0.29,
+   "group_level": 0.638,
+   "by_age": {
+    "18-29": 0.214,
+    "30-49": 0.297,
+    "50-64": 0.326,
+    "65+": 0.301
+   }
+  }
+ },
+ "Q178": {
+  "options": [
+   "likely",
+   "somewhat likely",
+   "somewhat unlikely",
+   "unlikely",
+   "very likely",
+   "very unlikely"
+  ],
+  "n_aligned": 668,
+  "predicted_distribution": {
+   "likely": 0.4476,
+   "somewhat likely": 0.2844,
+   "very likely": 0.2455,
+   "somewhat unlikely": 0.015,
+   "unlikely": 0.0075
+  },
+  "human_distribution": {
+   "very likely": 0.3578,
+   "likely": 0.2605,
+   "somewhat likely": 0.1961,
+   "somewhat unlikely": 0.0883,
+   "unlikely": 0.0644,
+   "very unlikely": 0.0329
+  },
+  "verified": {
+   "individual": 0.332,
+   "group_level": 0.725,
+   "by_age": {
+    "18-29": 0.32,
+    "30-49": 0.362,
+    "50-64": 0.337,
+    "65+": 0.258
+   }
+  }
+ },
+ "Q179": {
+  "options": [
+   "likely",
+   "somewhat likely",
+   "somewhat unlikely",
+   "unlikely",
+   "very likely",
+   "very unlikely"
+  ],
+  "n_aligned": 647,
+  "predicted_distribution": {
+   "likely": 0.5085,
+   "very likely": 0.2442,
+   "somewhat likely": 0.2334,
+   "somewhat unlikely": 0.0108,
+   "unlikely": 0.0031
+  },
+  "human_distribution": {
+   "very likely": 0.3555,
+   "likely": 0.2736,
+   "somewhat likely": 0.1994,
+   "somewhat unlikely": 0.0866,
+   "unlikely": 0.0587,
+   "very unlikely": 0.0263
+  },
+  "verified": {
+   "individual": 0.348,
+   "group_level": 0.731,
+   "by_age": {
+    "18-29": 0.391,
+    "30-49": 0.375,
+    "50-64": 0.305,
+    "65+": 0.333
+   }
+  }
+ },
+ "Q183": {
+  "options": [
+   "No",
+   "Yes"
+  ],
+  "n_aligned": 1027,
+  "predicted_distribution": {
+   "Yes": 0.9572,
+   "No": 0.0428
+  },
+  "human_distribution": {
+   "Yes": 0.7274,
+   "No": 0.2726
+  },
+  "verified": {
+   "individual": 0.704,
+   "group_level": 0.77,
+   "by_age": {
+    "18-29": 0.699,
+    "30-49": 0.659,
+    "50-64": 0.722,
+    "65+": 0.798
+   }
+  }
+ },
+ "Q184": {
+  "options": [
+   "No",
+   "Yes"
+  ],
+  "n_aligned": 1023,
+  "predicted_distribution": {
+   "No": 0.9932,
+   "Yes": 0.0068
+  },
+  "human_distribution": {
+   "No": 0.7077,
+   "Yes": 0.2923
+  },
+  "verified": {
+   "individual": 0.703,
+   "group_level": 0.715,
+   "by_age": {
+    "18-29": 0.649,
+    "30-49": 0.762,
+    "50-64": 0.711,
+    "65+": 0.616
+   }
+  }
+ },
+ "Q189": {
+  "options": [
+   "$1,000 ",
+   "$1,000,000 ",
+   "$10 ",
+   "$10,000 ",
+   "$100 ",
+   "$100,000 ",
+   "$250,000 ",
+   "$5,000,000 or more",
+   "$50,000 ",
+   "$500,000 "
+  ],
+  "n_aligned": 710,
+  "predicted_distribution": {
+   "$10,000": 0.631,
+   "$1,000": 0.2577,
+   "$50,000": 0.1085,
+   "$100": 0.0014,
+   "$10": 0.0014
+  },
+  "human_distribution": {
+   "$1,000 ": 0.2986,
+   "$100 ": 0.2592,
+   "$10 ": 0.1408,
+   "$10,000 ": 0.1366,
+   "$50,000 ": 0.0535,
+   "$100,000 ": 0.0352,
+   "$5,000,000 or more": 0.0268,
+   "$250,000 ": 0.0183,
+   "$500,000 ": 0.0183,
+   "$1,000,000 ": 0.0127
+  },
+  "verified": {
+   "individual": 0.177,
+   "group_level": 0.5,
+   "by_age": {
+    "18-29": 0.218,
+    "30-49": 0.216,
+    "50-64": 0.142,
+    "65+": 0.12
+   }
+  }
+ },
+ "Q190": {
+  "options": [
+   "$1,000 ",
+   "$1,000,000 ",
+   "$10 ",
+   "$10,000 ",
+   "$100 ",
+   "$100,000 ",
+   "$250,000 ",
+   "$5,000,000 or more",
+   "$50,000 ",
+   "$500,000 "
+  ],
+  "n_aligned": 669,
+  "predicted_distribution": {
+   "$100,000": 0.7339,
+   "$50,000": 0.1495,
+   "$1,000,000": 0.0538,
+   "$250,000": 0.0389,
+   "$5,000,000 or more": 0.0164,
+   "$10,000": 0.0045,
+   "$1,000": 0.0015,
+   "$500,000": 0.0015
+  },
+  "human_distribution": {
+   "$5,000,000 or more": 0.3109,
+   "$1,000,000 ": 0.1555,
+   "$10,000 ": 0.0957,
+   "$500,000 ": 0.0882,
+   "$100,000 ": 0.0837,
+   "$250,000 ": 0.0717,
+   "$50,000 ": 0.0717,
+   "$1,000 ": 0.0643,
+   "$100 ": 0.0359,
+   "$10 ": 0.0224
+  },
+  "verified": {
+   "individual": 0.072,
+   "group_level": 0.508,
+   "by_age": {
+    "18-29": 0.101,
+    "30-49": 0.087,
+    "50-64": 0.053,
+    "65+": 0.033
+   }
+  }
+ },
+ "Q191": {
+  "options": [
+   "$1,000 ",
+   "$1,000,000 ",
+   "$10 ",
+   "$10,000 ",
+   "$100 ",
+   "$100,000 ",
+   "$250,000 ",
+   "$5,000,000 or more",
+   "$50,000 ",
+   "$500,000 "
+  ],
+  "n_aligned": 671,
+  "predicted_distribution": {
+   "$100": 0.5917,
+   "$1,000": 0.313,
+   "$10": 0.0954
+  },
+  "human_distribution": {
+   "$100 ": 0.383,
+   "$10 ": 0.3189,
+   "$1,000 ": 0.2027,
+   "$10,000 ": 0.0626,
+   "$5,000,000 or more": 0.0104,
+   "$100,000 ": 0.0089,
+   "$1,000,000 ": 0.006,
+   "$50,000 ": 0.0045,
+   "$500,000 ": 0.0015,
+   "$250,000 ": 0.0015
+  },
+  "verified": {
+   "individual": 0.326,
+   "group_level": 0.5,
+   "by_age": {
+    "18-29": 0.305,
+    "30-49": 0.365,
+    "50-64": 0.297,
+    "65+": 0.313
+   }
+  }
+ },
+ "Q194": {
+  "options": [
+   "definitely no",
+   "definitely yes",
+   "no",
+   "probably no",
+   "probably yes",
+   "yes"
+  ],
+  "n_aligned": 1009,
+  "predicted_distribution": {
+   "probably yes": 0.6016,
+   "yes": 0.3013,
+   "probably no": 0.0833,
+   "no": 0.0089,
+   "definitely yes": 0.005
+  },
+  "human_distribution": {
+   "probably yes": 0.3479,
+   "yes": 0.219,
+   "definitely yes": 0.1596,
+   "probably no": 0.1516,
+   "no": 0.0842,
+   "definitely no": 0.0377
+  },
+  "verified": {
+   "individual": 0.329,
+   "group_level": 0.664,
+   "by_age": {
+    "18-29": 0.344,
+    "30-49": 0.344,
+    "50-64": 0.322,
+    "65+": 0.286
+   }
+  }
+ },
+ "Q195": {
+  "options": [
+   "definitely no",
+   "definitely yes",
+   "no",
+   "probably no",
+   "probably yes",
+   "yes"
+  ],
+  "n_aligned": 1041,
+  "predicted_distribution": {
+   "probably yes": 0.5841,
+   "yes": 0.3381,
+   "probably no": 0.0548,
+   "definitely yes": 0.0173,
+   "no": 0.0048,
+   "definitely no": 0.001
+  },
+  "human_distribution": {
+   "probably yes": 0.3295,
+   "definitely yes": 0.2719,
+   "yes": 0.2411,
+   "probably no": 0.0893,
+   "no": 0.0461,
+   "definitely no": 0.0221
+  },
+  "verified": {
+   "individual": 0.312,
+   "group_level": 0.648,
+   "by_age": {
+    "18-29": 0.352,
+    "30-49": 0.306,
+    "50-64": 0.312,
+    "65+": 0.275
+   }
+  }
+ },
+ "Q198_1": {
+  "options": [
+   "1",
+   "2"
+  ],
+  "n_aligned": 1028,
+  "predicted_distribution": {
+   "1": 1.0
+  },
+  "human_distribution": {
+   "1": 0.9212,
+   "2": 0.0788
+  },
+  "verified": {
+   "individual": 0.921,
+   "group_level": 0.921,
+   "by_age": {
+    "18-29": 0.91,
+    "30-49": 0.934,
+    "50-64": 0.909,
+    "65+": 0.928
+   }
+  }
+ },
+ "Q198_10": {
+  "options": [
+   "1",
+   "2"
+  ],
+  "n_aligned": 1028,
+  "predicted_distribution": {
+   "1": 1.0
+  },
+  "human_distribution": {
+   "1": 0.7082,
+   "2": 0.2918
+  },
+  "verified": {
+   "individual": 0.708,
+   "group_level": 0.708,
+   "by_age": {
+    "18-29": 0.719,
+    "30-49": 0.726,
+    "50-64": 0.692,
+    "65+": 0.686
+   }
+  }
+ },
+ "Q198_2": {
+  "options": [
+   "1",
+   "2"
+  ],
+  "n_aligned": 1028,
+  "predicted_distribution": {
+   "1": 1.0
+  },
+  "human_distribution": {
+   "1": 0.8696,
+   "2": 0.1304
+  },
+  "verified": {
+   "individual": 0.87,
+   "group_level": 0.87,
+   "by_age": {
+    "18-29": 0.837,
+    "30-49": 0.873,
+    "50-64": 0.871,
+    "65+": 0.895
+   }
+  }
+ },
+ "Q198_3": {
+  "options": [
+   "1",
+   "2"
+  ],
+  "n_aligned": 1028,
+  "predicted_distribution": {
+   "1": 1.0
+  },
+  "human_distribution": {
+   "1": 0.7733,
+   "2": 0.2267
+  },
+  "verified": {
+   "individual": 0.773,
+   "group_level": 0.773,
+   "by_age": {
+    "18-29": 0.725,
+    "30-49": 0.802,
+    "50-64": 0.792,
+    "65+": 0.719
+   }
+  }
+ },
+ "Q198_4": {
+  "options": [
+   "1",
+   "2"
+  ],
+  "n_aligned": 1028,
+  "predicted_distribution": {
+   "1": 1.0
+  },
+  "human_distribution": {
+   "1": 0.7918,
+   "2": 0.2082
+  },
+  "verified": {
+   "individual": 0.792,
+   "group_level": 0.792,
+   "by_age": {
+    "18-29": 0.775,
+    "30-49": 0.818,
+    "50-64": 0.796,
+    "65+": 0.739
+   }
+  }
+ },
+ "Q198_5": {
+  "options": [
+   "1",
+   "2"
+  ],
+  "n_aligned": 1028,
+  "predicted_distribution": {
+   "1": 1.0
+  },
+  "human_distribution": {
+   "1": 0.7947,
+   "2": 0.2053
+  },
+  "verified": {
+   "individual": 0.795,
+   "group_level": 0.795,
+   "by_age": {
+    "18-29": 0.747,
+    "30-49": 0.792,
+    "50-64": 0.805,
+    "65+": 0.837
+   }
+  }
+ },
+ "Q198_6": {
+  "options": [
+   "1",
+   "2"
+  ],
+  "n_aligned": 1028,
+  "predicted_distribution": {
+   "1": 1.0
+  },
+  "human_distribution": {
+   "1": 0.75,
+   "2": 0.25
+  },
+  "verified": {
+   "individual": 0.75,
+   "group_level": 0.75,
+   "by_age": {
+    "18-29": 0.691,
+    "30-49": 0.765,
+    "50-64": 0.761,
+    "65+": 0.758
+   }
+  }
+ },
+ "Q198_7": {
+  "options": [
+   "1",
+   "2"
+  ],
+  "n_aligned": 1028,
+  "predicted_distribution": {
+   "1": 1.0
+  },
+  "human_distribution": {
+   "1": 0.7383,
+   "2": 0.2617
+  },
+  "verified": {
+   "individual": 0.738,
+   "group_level": 0.738,
+   "by_age": {
+    "18-29": 0.685,
+    "30-49": 0.763,
+    "50-64": 0.752,
+    "65+": 0.712
+   }
+  }
+ },
+ "Q198_8": {
+  "options": [
+   "1",
+   "2"
+  ],
+  "n_aligned": 1028,
+  "predicted_distribution": {
+   "1": 1.0
+  },
+  "human_distribution": {
+   "1": 0.6984,
+   "2": 0.3016
+  },
+  "verified": {
+   "individual": 0.698,
+   "group_level": 0.698,
+   "by_age": {
+    "18-29": 0.697,
+    "30-49": 0.715,
+    "50-64": 0.689,
+    "65+": 0.68
+   }
+  }
+ },
+ "Q198_9": {
+  "options": [
+   "1",
+   "2"
+  ],
+  "n_aligned": 1028,
+  "predicted_distribution": {
+   "1": 1.0
+  },
+  "human_distribution": {
+   "1": 0.6732,
+   "2": 0.3268
+  },
+  "verified": {
+   "individual": 0.673,
+   "group_level": 0.673,
+   "by_age": {
+    "18-29": 0.635,
+    "30-49": 0.668,
+    "50-64": 0.717,
+    "65+": 0.641
+   }
+  }
+ },
+ "Q203_1": {
+  "options": [
+   "green",
+   "red"
+  ],
+  "n_aligned": 1022,
+  "predicted_distribution": {
+   "red": 1.0
+  },
+  "human_distribution": {
+   "red": 0.9599,
+   "green": 0.0401
+  },
+  "verified": {
+   "individual": 0.96,
+   "group_level": 0.96,
+   "by_age": {
+    "18-29": 0.938,
+    "30-49": 0.969,
+    "50-64": 0.959,
+    "65+": 0.975
+   }
+  }
+ },
+ "Q203_2": {
+  "options": [
+   "green",
+   "red"
+  ],
+  "n_aligned": 1022,
+  "predicted_distribution": {
+   "red": 1.0
+  },
+  "human_distribution": {
+   "red": 0.8679,
+   "green": 0.1321
+  },
+  "verified": {
+   "individual": 0.868,
+   "group_level": 0.868,
+   "by_age": {
+    "18-29": 0.829,
+    "30-49": 0.878,
+    "50-64": 0.864,
+    "65+": 0.918
+   }
+  }
+ },
+ "Q203_3": {
+  "options": [
+   "green",
+   "red"
+  ],
+  "n_aligned": 1022,
+  "predicted_distribution": {
+   "red": 1.0
+  },
+  "human_distribution": {
+   "red": 0.6575,
+   "green": 0.3425
+  },
+  "verified": {
+   "individual": 0.658,
+   "group_level": 0.658,
+   "by_age": {
+    "18-29": 0.61,
+    "30-49": 0.719,
+    "50-64": 0.645,
+    "65+": 0.598
+   }
+  }
+ },
+ "Q203_4": {
+  "options": [
+   "green",
+   "red"
+  ],
+  "n_aligned": 1022,
+  "predicted_distribution": {
+   "red": 1.0
+  },
+  "human_distribution": {
+   "red": 0.8102,
+   "green": 0.1898
+  },
+  "verified": {
+   "individual": 0.81,
+   "group_level": 0.81,
+   "by_age": {
+    "18-29": 0.757,
+    "30-49": 0.81,
+    "50-64": 0.843,
+    "65+": 0.811
+   }
+  }
+ },
+ "Q203_5": {
+  "options": [
+   "green",
+   "red"
+  ],
+  "n_aligned": 1022,
+  "predicted_distribution": {
+   "red": 1.0
+  },
+  "human_distribution": {
+   "red": 0.6262,
+   "green": 0.3738
+  },
+  "verified": {
+   "individual": 0.626,
+   "group_level": 0.626,
+   "by_age": {
+    "18-29": 0.638,
+    "30-49": 0.614,
+    "50-64": 0.639,
+    "65+": 0.607
+   }
+  }
+ },
+ "Q203_6": {
+  "options": [
+   "green",
+   "red"
+  ],
+  "n_aligned": 1022,
+  "predicted_distribution": {
+   "red": 1.0
+  },
+  "human_distribution": {
+   "red": 0.6067,
+   "green": 0.3933
+  },
+  "verified": {
+   "individual": 0.607,
+   "group_level": 0.607,
+   "by_age": {
+    "18-29": 0.567,
+    "30-49": 0.636,
+    "50-64": 0.598,
+    "65+": 0.615
+   }
+  }
+ },
+ "_overall": {
+  "model": "Recursivo Predict v1 (GPT-4.1 JSON persona, verified)",
+  "source": "LLM-Digital-Twin/Twin-2K-500 :: LLM_simulation_results/llm_simulations_all_specifications/JSON Persona (Predicted Output) - GPT4.1/csv_comparison/csv_formatted_label/responses_llm_imputed_label_formatted.csv",
+  "dataset": "Twin-2K-500 wave4 held-out (real people, arXiv 2505.17479)",
+  "n_predictions": 42968,
+  "items": 46,
+  "verified": {
+   "individual": 0.546,
+   "group_level": 0.666,
+   "by_age": {
+    "65+": 0.541,
+    "50-64": 0.549,
+    "18-29": 0.528,
+    "30-49": 0.554
+   },
+   "by_age_gap": 0.026
+  },
+  "majority_baseline": 0.583,
+  "honest_caveat": "individual prediction is ~0.546 (below the 0.583 dumb baseline); the value is the VERIFIED group-level distribution (~0.666 via 1-TV), not an individual oracle. The ruler that measures is the ruler that trains."
+ }
+}

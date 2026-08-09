@@ -1,0 +1,186 @@
+{
+ "dataset": "Twin-2K-500 wave4 held-out (2,058 real people, Columbia arXiv 2505.17479)",
+ "items": 46,
+ "metric": "individual = exact-match vs the real person's held-out answer; group = 1 - mean TV distance",
+ "note": "apples-to-apples across models on the same 46 categorical items, full 2058 personas, exact-match individual + 1-TV group (kind='measured'/'baseline'). Vendor claims of 85-99% are group-level or unvalidated. kind='published' rows are real numbers from other papers but use DIFFERENT datasets and/or metrics (see each row's 'metric'/'note'); they are NOT directly comparable to the measured individual column - included to show how much the number moves with the ruler.",
+ "rows": [
+  {
+   "simulator": "majority-class baseline (dumb constant)",
+   "n_pred": 43230,
+   "individual": 0.583,
+   "group_level": null,
+   "kind": "baseline"
+  },
+  {
+   "simulator": "GPT-4.1 (full persona)",
+   "n_pred": 43062,
+   "individual": 0.36,
+   "group_level": 0.607,
+   "by_age": {
+    "18-29": 0.363,
+    "30-49": 0.36,
+    "50-64": 0.368,
+    "65+": 0.34
+   },
+   "by_age_gap": 0.028,
+   "kind": "measured",
+   "source": "https://arxiv.org/abs/2505.17479"
+  },
+  {
+   "simulator": "GPT-4.1-mini (demographics only)",
+   "n_pred": 43230,
+   "individual": 0.328,
+   "group_level": 0.57,
+   "kind": "measured",
+   "source": "https://arxiv.org/abs/2505.17479"
+  },
+  {
+   "simulator": "GPT-4.1-mini (full persona)",
+   "n_pred": 43230,
+   "individual": 0.299,
+   "group_level": 0.501,
+   "kind": "measured",
+   "source": "https://arxiv.org/abs/2505.17479"
+  },
+  {
+   "simulator": "Claude (full persona)",
+   "n_pred": 644,
+   "individual": 0.539,
+   "group_level": 0.556,
+   "by_age": {
+    "18-29": 0.696,
+    "30-49": 0.57,
+    "50-64": 0.505,
+    "65+": 0.533
+   },
+   "by_age_gap": 0.191,
+   "kind": "measured",
+   "metric": "same 46-item exact-match individual + 1-TV group",
+   "note": "measured now on the RecursivoBench harness: 28 real Twin-2K-500 personas (HF full_persona), 644 held-out predictions, same score() as the rows above. Smaller persona sample than the GPT-4.1 rows, so group_level is noisier."
+  },
+  {
+   "simulator": "Gemini 2.5 Flash (text persona)",
+   "individual": 0.694,
+   "group_level": null,
+   "kind": "published",
+   "source": "https://arxiv.org/abs/2505.17479",
+   "metric": "Twin-2K-500 paper accuracy = 1 - normalized deviation on 88 binary/numeric holdout items (Table 2)",
+   "note": "same dataset, but the paper's lenient deviation metric on numeric/binary items, NOT the 46 categorical exact-match. For context, on that SAME lenient metric GPT-4.1-mini scores 0.705 - it inflates vs the exact-match individual column."
+  },
+  {
+   "simulator": "Claude 3.7 Sonnet (SimBench)",
+   "individual": null,
+   "group_level": 0.408,
+   "kind": "published",
+   "source": "https://arxiv.org/abs/2510.17516",
+   "metric": "SimBench SimScore/100 (best of 60+ models tested)",
+   "note": "SimBench SimScore, group-level distributional match across 20 survey datasets (SimBenchPop, 7,167 cases). NOT the 46-item exact-match; different dataset+metric. Shown normalized (SimScore/100) in the group column; individual-level not reported."
+  },
+  {
+   "simulator": "DeepSeek-R1 (SimBench)",
+   "individual": null,
+   "group_level": 0.345,
+   "kind": "published",
+   "source": "https://arxiv.org/abs/2510.17516",
+   "metric": "SimBench SimScore/100",
+   "note": "SimBench SimScore, group-level distributional match across 20 survey datasets (SimBenchPop, 7,167 cases). NOT the 46-item exact-match; different dataset+metric. Shown normalized (SimScore/100) in the group column; individual-level not reported."
+  },
+  {
+   "simulator": "DeepSeek-V3-0324 (SimBench)",
+   "individual": null,
+   "group_level": 0.329,
+   "kind": "published",
+   "source": "https://arxiv.org/abs/2510.17516",
+   "metric": "SimBench SimScore/100",
+   "note": "SimBench SimScore, group-level distributional match across 20 survey datasets (SimBenchPop, 7,167 cases). NOT the 46-item exact-match; different dataset+metric. Shown normalized (SimScore/100) in the group column; individual-level not reported."
+  },
+  {
+   "simulator": "Llama-3.1-405B-Instruct (SimBench)",
+   "individual": null,
+   "group_level": 0.284,
+   "kind": "published",
+   "source": "https://arxiv.org/abs/2510.17516",
+   "metric": "SimBench SimScore/100",
+   "note": "SimBench SimScore, group-level distributional match across 20 survey datasets (SimBenchPop, 7,167 cases). NOT the 46-item exact-match; different dataset+metric. Shown normalized (SimScore/100) in the group column; individual-level not reported."
+  },
+  {
+   "simulator": "Qwen2.5-72B-Instruct (SimBench)",
+   "individual": null,
+   "group_level": 0.276,
+   "kind": "published",
+   "source": "https://arxiv.org/abs/2510.17516",
+   "metric": "SimBench SimScore/100",
+   "note": "SimBench SimScore, group-level distributional match across 20 survey datasets (SimBenchPop, 7,167 cases). NOT the 46-item exact-match; different dataset+metric. Shown normalized (SimScore/100) in the group column; individual-level not reported."
+  },
+  {
+   "simulator": "o4-mini-low (OpenAI, reasoning)",
+   "individual": null,
+   "group_level": 0.23,
+   "kind": "published",
+   "source": "https://arxiv.org/abs/2510.17516",
+   "note": "SimBench group-level; newer OpenAI reasoning model; item set differs"
+  },
+  {
+   "simulator": "o4-mini-high (OpenAI, reasoning)",
+   "individual": null,
+   "group_level": 0.225,
+   "kind": "published",
+   "source": "https://arxiv.org/abs/2510.17516",
+   "note": "SimBench group-level; newer OpenAI reasoning model; item set differs"
+  }
+ ],
+ "aside": {
+  "our_persona_llm_claude": {
+   "individual": 0.417,
+   "group_level": 0.622,
+   "items": 38,
+   "note": "our harness baseline, QID item subset (not same items as rows above)",
+   "by_age_gap": 0.087
+  }
+ },
+ "segments_available": true,
+ "external_group_level_fidelity": {
+  "metric": "SynthBench Survey Parity Score (distributional fidelity vs Pew ATP/GSS/GlobalOpinionQA, 0-1; NOT individual accuracy)",
+  "source": "https://synthbench.org/findings/",
+  "models": [
+   {
+    "model": "Gemini 2.5 Flash",
+    "sps": 0.829
+   },
+   {
+    "model": "Llama 3.3 70B",
+    "sps": 0.819
+   },
+   {
+    "model": "Claude Haiku 4.5",
+    "sps": 0.815
+   },
+   {
+    "model": "GPT-4o",
+    "sps": 0.813
+   },
+   {
+    "model": "GPT-4o-mini",
+    "sps": 0.813
+   },
+   {
+    "model": "Claude Sonnet 4",
+    "sps": 0.782
+   },
+   {
+    "model": "Claude Sonnet 4.6",
+    "sps": 0.738
+   }
+  ]
+ },
+ "independent_individual_result": {
+  "study": "Peng et al., Digital Twins as Funhouse Mirrors: Five Key Distortions",
+  "source": "https://arxiv.org/abs/2509.19088",
+  "n_participants": 2058,
+  "studies": 19,
+  "outcomes": 164,
+  "individual_correlation_r": 0.2,
+  "under_dispersion_share": 0.939,
+  "note": "Peer study on the same 2,058-person panel; twins trained on 500+ of each person's own answers; individual correlation r=0.20. Independently corroborates that individual prediction is weak."
+ }
+}

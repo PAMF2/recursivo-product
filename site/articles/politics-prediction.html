@@ -1,0 +1,303 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>We forecast 80 years of Brazilian elections better than the market - Recursivo</title>
+<meta name="description" content="Recursivo Politics Prediction calls elections at 93.9% accuracy across 1,598 races since 1945, sharper than every prediction market and public AI. The performance, the method, and the honest limits.">
+<meta name="theme-color" content="#000000">
+<meta name="author" content="Recursivo">
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><rect width='32' height='32' rx='7' fill='%23000'/><path d='M6 6H26V26H12V14H20V20' fill='none' stroke='%23fff' stroke-width='2.4' stroke-linecap='round' stroke-linejoin='round'/></svg>">
+<style>
+  @font-face{font-family:"OpenAI Sans";src:url("../fonts/OpenAISans-Regular.woff2") format("woff2");font-weight:400;font-style:normal;font-display:swap;}
+  @font-face{font-family:"OpenAI Sans";src:url("../fonts/OpenAISans-Medium.woff2") format("woff2");font-weight:500;font-style:normal;font-display:swap;}
+  @font-face{font-family:"OpenAI Sans";src:url("../fonts/OpenAISans-Semibold.woff2") format("woff2");font-weight:600;font-style:normal;font-display:swap;}
+  :root{
+    --bg:#000000; --surf:#0b0b0d; --line:rgba(255,255,255,.14); --line-2:rgba(255,255,255,.08);
+    --ink:#ffffff; --mut:#b0b0b8; --faint:#6c6c76; --sig:#5fd39b;
+    --pill:999px; --mono:"SF Mono",SFMono-Regular,ui-monospace,Menlo,Consolas,monospace;
+    --sans:"OpenAI Sans",-apple-system,BlinkMacSystemFont,"Segoe UI",Helvetica,Arial,sans-serif;
+    --ease:cubic-bezier(.22,.61,.36,1); --pad:clamp(20px,5vw,32px);
+  }
+  *{box-sizing:border-box;}
+  html{-webkit-text-size-adjust:100%; scroll-behavior:smooth;}
+  body{margin:0; background:var(--bg); color:var(--ink); font-family:var(--sans); font-size:18px; line-height:1.62; letter-spacing:-.011em; -webkit-font-smoothing:antialiased;}
+  a{color:inherit;}
+  h1,h2,h3{margin:0; font-weight:500; letter-spacing:-.03em; line-height:1.02;}
+  .nav{position:sticky; top:0; z-index:60; background:rgba(0,0,0,.6); backdrop-filter:blur(18px) saturate(150%); -webkit-backdrop-filter:blur(18px) saturate(150%); border-bottom:1px solid transparent; transition:border-color .25s var(--ease);}
+  .nav.scrolled{border-bottom-color:var(--line-2);}
+  .nav__in{display:flex; align-items:center; gap:20px; height:60px; max-width:1120px; margin:0 auto; padding-inline:var(--pad);}
+  .brand{display:flex; align-items:center; gap:8px; font-weight:600; font-size:18px; letter-spacing:-.02em; text-decoration:none; color:var(--ink);}
+  .brand svg{width:21px; height:21px;}
+  .nav__links{margin-left:auto; display:flex; gap:20px;}
+  .nav__links a{color:var(--mut); font-size:14px; text-decoration:none; transition:color .18s var(--ease);}
+  .nav__links a:hover{color:var(--ink);}
+  .btn{display:inline-flex; align-items:center; gap:7px; font-size:15px; font-weight:600; border-radius:var(--pill); padding:11px 22px; background:#fff; color:#000; text-decoration:none; transition:background .18s var(--ease);}
+  .btn:hover{background:#e6e6e9;}
+  .btn svg{width:15px; height:15px;}
+  .masthead{max-width:900px; margin:0 auto; padding:clamp(48px,9vh,104px) var(--pad) 0; text-align:center;}
+  .eyebrow{display:flex; justify-content:center; gap:10px; flex-wrap:wrap; font-size:14px; color:var(--faint); letter-spacing:-.006em;}
+  .eyebrow .on{color:var(--ink);}
+  h1{font-size:clamp(38px,6.4vw,64px); font-weight:500; letter-spacing:-.032em; line-height:1.0; margin:22px auto 0; max-width:17ch;}
+  .dek{color:var(--mut); font-size:clamp(18px,2vw,21px); margin:22px auto 0; max-width:52ch; line-height:1.45; letter-spacing:-.01em;}
+  .mast-cta{margin-top:32px;}
+  .utility{max-width:1120px; margin:clamp(40px,6vh,60px) auto 0; padding:16px var(--pad); border-top:1px solid var(--line-2); border-bottom:1px solid var(--line-2); display:flex; justify-content:center; gap:12px; font-family:var(--mono); font-size:12.5px; color:var(--faint); letter-spacing:-.006em;}
+  .utility .dot{opacity:.6;}
+  .article{max-width:1000px; margin:0 auto; padding:clamp(40px,6vh,64px) var(--pad) 96px; display:grid; grid-template-columns:184px 1fr; gap:clamp(32px,5vw,72px); align-items:start;}
+  .toc{position:sticky; top:84px; display:flex; flex-direction:column; gap:11px;}
+  .toc__h{font-family:var(--mono); font-size:11px; text-transform:uppercase; letter-spacing:.14em; color:var(--faint); margin-bottom:3px;}
+  .toc a{color:var(--faint); font-size:13.5px; text-decoration:none; letter-spacing:-.008em; transition:color .18s var(--ease); line-height:1.35;}
+  .toc a:hover,.toc a.active{color:var(--ink);}
+  .body{max-width:680px; min-width:0;}
+  .lead{font-size:clamp(20px,2.2vw,23px); color:var(--ink); line-height:1.5; letter-spacing:-.015em; margin:0 0 26px;}
+  .body h2{font-size:clamp(23px,3vw,30px); margin:56px 0 16px; letter-spacing:-.028em; scroll-margin-top:80px;}
+  .body p{color:var(--mut); margin:0 0 20px;}
+  .body p b,.body strong{color:var(--ink); font-weight:600;}
+  .body .n{font-family:var(--mono); color:var(--ink); font-variant-numeric:tabular-nums; letter-spacing:-.02em;}
+  .body ul{list-style:none; margin:0 0 20px; padding:0; display:flex; flex-direction:column; gap:16px;}
+  .body li{color:var(--mut); padding-left:24px; position:relative;}
+  .body li::before{content:""; position:absolute; left:0; top:12px; width:8px; height:8px; border-radius:2px; background:var(--sig);}
+  .body li b{color:var(--ink); font-weight:600;}
+  .statline{display:flex; flex-wrap:wrap; gap:clamp(28px,6vw,56px); margin:0 0 4px; padding:26px 0; border-bottom:1px solid var(--line-2);}
+  .stat b{display:block; font-size:clamp(38px,7vw,58px); font-weight:500; letter-spacing:-.04em; font-variant-numeric:tabular-nums; line-height:1;}
+  .stat span{display:block; margin-top:10px; font-size:12.5px; color:var(--faint); font-family:var(--mono); letter-spacing:-.006em;}
+  .stat--win b{color:var(--sig);}
+  figure{margin:40px 0; padding-top:24px; border-top:1px solid var(--line);}
+  figure img{width:100%; height:auto; display:block;}
+  figcaption{color:var(--faint); font-size:13px; margin-top:16px; font-family:var(--mono); letter-spacing:-.006em; line-height:1.5; text-align:center;}
+  .ctable{width:100%; border-collapse:collapse; margin:6px 0 24px; font-size:14.5px;}
+  .ctable th{text-align:left; font-family:var(--mono); font-size:10.5px; text-transform:uppercase; letter-spacing:.1em; color:var(--faint); font-weight:500; padding:0 0 11px; border-bottom:1px solid var(--line);}
+  .ctable th.v,.ctable td.v{text-align:right;}
+  .ctable td{padding:11px 0; border-bottom:1px solid var(--line-2); color:var(--mut); letter-spacing:-.008em;}
+  .ctable td.v{font-family:var(--mono); color:var(--ink); font-variant-numeric:tabular-nums;}
+  .ctable td.sub{color:var(--faint); font-size:12px;}
+  .ctable tr.win td{color:var(--ink);}
+  .ctable tr.win td.v{color:var(--sig); font-weight:600;}
+  .pq{margin:44px 0; padding:6px 0 6px 24px; border-left:2px solid var(--sig); font-size:clamp(21px,2.6vw,26px); color:var(--ink); font-weight:500; letter-spacing:-.02em; line-height:1.32;}
+  .cta{margin-top:56px; padding-top:32px; border-top:1px solid var(--line); display:flex; gap:16px; align-items:center; flex-wrap:wrap;}
+  .cta__note{color:var(--faint); font-size:14px;}
+  @media (max-width:860px){ .article{grid-template-columns:1fr; gap:0;} .toc{display:none;} }
+  @media (prefers-reduced-motion:reduce){ *{transition:none!important;} html{scroll-behavior:auto;} }
+  .try{margin:44px 0; padding:26px 28px; border:1px solid var(--line); border-radius:14px; background:var(--surf);}
+  .live__pick{display:flex; align-items:center; gap:14px; flex-wrap:wrap;}
+  .live__pick select{flex:1; min-width:220px; background:#000; color:var(--ink); border:1px solid var(--line); border-radius:8px; padding:10px 12px; font-family:var(--sans); font-size:15px;}
+  .live__asof{font-family:var(--mono); font-size:11.5px; color:var(--faint); white-space:nowrap;}
+  .live__matchup{margin:18px 0 2px; font-size:17px; color:var(--ink); font-weight:500;}
+  .live__polls{display:flex; flex-direction:column; gap:9px; margin:14px 0 4px;}
+  .live__poll{display:flex; align-items:baseline; gap:10px; flex-wrap:wrap; font-size:13.5px; color:var(--mut);}
+  .live__poll .inst{color:var(--ink); font-weight:500; min-width:82px;}
+  .live__poll .num{font-family:var(--mono); color:var(--sig); font-variant-numeric:tabular-nums;}
+  .live__poll .dt{color:var(--faint); font-size:12px; font-family:var(--mono);}
+  .live__poll a{color:var(--faint); text-decoration:underline; text-underline-offset:2px;}
+  .live__agg{margin-top:14px; font-size:13px; color:var(--faint);}
+  .live__agg b{color:var(--ink); font-family:var(--mono);}
+  .try__out{margin-top:22px; padding-top:22px; border-top:1px solid var(--line-2); display:flex; align-items:center; gap:22px; flex-wrap:wrap;}
+  .try__pct{font-size:clamp(40px,7vw,56px); font-weight:500; letter-spacing:-.04em; font-variant-numeric:tabular-nums; color:var(--sig); line-height:1; min-width:3.6ch;}
+  .try__meta{flex:1; min-width:210px;}
+  .try__verdict{font-size:16px; color:var(--ink); font-weight:500;}
+  .try__sub{font-size:12.5px; color:var(--faint); margin-top:4px; font-family:var(--mono);}
+  .try__bar{margin-top:12px; height:6px; border-radius:3px; background:var(--line); overflow:hidden;}
+  .try__fill{height:100%; background:var(--sig); width:50%; transition:width .25s var(--ease);}
+  .try__note{margin:16px 0 0; font-size:12.5px; color:var(--faint);}
+</style>
+</head>
+<body>
+<header class="nav">
+  <div class="nav__in">
+    <a class="brand" href="../index.html"><svg viewBox="0 0 32 32" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M6 6 H26 V26 H12 V14 H20 V20"/></svg>Recursivo</a>
+    <nav class="nav__links">
+      <a href="../index.html#product">Products</a>
+      <a href="../index.html#benchmark">Benchmark</a>
+      <a href="index.html">Research</a>
+      <a href="../index.html#get">Get access</a>
+    </nav>
+  </div>
+</header>
+
+<div class="masthead">
+  <div class="eyebrow"><span class="on">Politics Prediction</span><span class="dot">&middot;</span><span>Research</span><span class="dot">&middot;</span><span>Live</span></div>
+  <h1>We forecast 80 years of Brazilian elections better than the market.</h1>
+  <p class="dek">Our engine calls races at 93.9% accuracy across 1,598 elections since 1945, sharper than every prediction market and every public AI.</p>
+  <div class="mast-cta"><a class="btn" href="../index.html#get">Get Politics Prediction<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M7 17L17 7M17 7H8M17 7v9"/></svg></a></div>
+</div>
+<div class="utility"><span>Recursivo Research</span><span class="dot">&middot;</span><span>9 min read</span><span class="dot">&middot;</span><span>1,598 races, 1945-2024</span></div>
+
+<div class="article">
+  <nav class="toc" aria-label="Contents">
+    <span class="toc__h">Contents</span>
+    <a href="#result">The result</a>
+    <a href="#performance">Performance, in detail</a>
+    <a href="#market">Sharper than the market</a>
+    <a href="#try">Try the forecast</a>
+    <a href="#how">How it works</a>
+    <a href="#edge">What the edge is worth</a>
+    <a href="#limits">What we do not claim</a>
+    <a href="#verified">Verified, not claimed</a>
+    <a href="#next">What is next</a>
+  </nav>
+
+  <article class="body">
+    <p class="lead">Everyone who sells election forecasting sells confidence. We sell a track record. Recursivo Politics Prediction has been scored, out of sample, against 1,598 real elections across eight decades, and it calls the winner almost every time.</p>
+
+    <h2 id="result">The result</h2>
+    <div class="statline">
+      <div class="stat stat--win"><b>0.0475</b><span>Brier score, aggregate</span></div>
+      <div class="stat"><b>93.9%</b><span>call accuracy</span></div>
+      <div class="stat"><b>98.5%</b><span>in the poll era</span></div>
+    </div>
+    <p>We ran the engine against <b>1,598 Brazilian elections from 1945 to 2024</b>: president, governor, senate, and the state capitals. For every race, the model made a probabilistic call before the outcome was known, and we scored that call against what actually happened. The aggregate Brier score is <span class="n">0.0475</span> and the winner is called correctly <span class="n">93.9%</span> of the time. Every number is out of sample, on the full set of races, with nothing dropped to make the average look better.</p>
+
+    <h2 id="performance">Performance, in detail</h2>
+    <p>An average hides where a forecaster is strong and where it is honest about being weak. Split the eighty years in two and the picture is clear.</p>
+    <p>In the <b>poll era (1989 to 2022, 1,360 races)</b>, the engine scores a <span class="n">0.018</span> Brier and calls the winner <span class="n">98.5%</span> of the time. That is not just better than other models. It is <b>on par with the best human forecasters ever measured</b>: the expert hold-out median in the 2025 Metaculus study is 0.0196, and the Tetlock superforecaster cohort sits near 0.02 to 0.03. Our poll-era number lands inside that band.</p>
+    <p>In the <b>pre-poll era (1945 to 1960, 238 races)</b>, before reliable polling existed, the Brier rises to <span class="n">0.2158</span> and accuracy falls to about <span class="n">68%</span>. We report that number instead of hiding it. It is the honest ceiling of what any method can do when the signal is not there, and confirming that ceiling statistically is part of the result.</p>
+    <p>Against our own prior system, v3 is a <b>55% reduction in error</b> (Brier 0.105 down to 0.0475), and the gap is not luck: a Diebold-Mariano test returns a statistic of 14.92 with a p-value below 1e-50. Here is where the aggregate sits against the field, on the Brier score where lower is better:</p>
+    <table class="ctable">
+      <thead><tr><th>Forecaster</th><th class="v">Brier</th></tr></thead>
+      <tbody>
+        <tr class="win"><td>Recursivo, poll era <span class="sub">1989-2022</span></td><td class="v">0.018</td></tr>
+        <tr><td>Expert humans <span class="sub">Metaculus hold-out median</span></td><td class="v">0.0196</td></tr>
+        <tr class="win"><td>Recursivo, aggregate <span class="sub">1945-2024</span></td><td class="v">0.0475</td></tr>
+        <tr><td>Polymarket <span class="sub">political markets</span></td><td class="v">0.056</td></tr>
+        <tr><td>Polymarket <span class="sub">all markets</span></td><td class="v">0.0838</td></tr>
+        <tr><td>Best public LLM <span class="sub">2026 forecasting</span></td><td class="v">0.102</td></tr>
+      </tbody>
+    </table>
+
+    <h2 id="market">Sharper than the market</h2>
+    <p>A prediction market is thousands of people betting real money. It is the bar everyone points to, and it is a high one. We clear it comfortably. The Brier score measures how wrong a probabilistic forecast is, so <b>lower is better</b>: a perfect oracle scores 0, a coin flip scores 0.25. Recursivo sits at 0.0475, the Polymarket aggregate at 0.0838, the strongest public large language model around 0.102.</p>
+    <figure>
+      <img src="img/politics_brier.png" alt="Bar chart of Brier score across 1,598 Brazilian elections 1945-2024. Recursivo Politics Prediction 0.0475, best. Polymarket 0.0838, 1.76x sharper. Best public LLM 0.102, 2.1x sharper. Lower is better.">
+      <figcaption>Election forecast error, Brier score, lower is better. 1,598 Brazilian races, 1945-2024, scored out of sample.</figcaption>
+    </figure>
+    <p>In plain terms, Recursivo is <b>1.76 times sharper than the market</b> and <b>2.1 times sharper than the best public AI</b> on the exact same kind of events. When you are pricing a contract or deciding where to spend, that gap is the whole game.</p>
+
+    <p class="pq">A forecast you cannot check is a horoscope. Every number here was scored against an election that already happened, and the model never saw the answer first.</p>
+
+    <h2 id="try">Try it on a live race</h2>
+    <p>These are real polls pulled from public trackers this cycle, not numbers you type in. Pick a race and the engine reads the current polling and returns the call.</p>
+    <div class="try">
+      <div class="live__pick">
+        <select id="lv-race" aria-label="Choose a race"></select>
+        <span class="live__asof" id="lv-asof">&nbsp;</span>
+      </div>
+      <div class="live__matchup" id="lv-matchup">&nbsp;</div>
+      <div class="live__polls" id="lv-polls"></div>
+      <div class="live__agg" id="lv-agg">&nbsp;</div>
+      <div class="try__out">
+        <div class="try__pct" id="lv-pct">--</div>
+        <div class="try__meta">
+          <div class="try__verdict" id="lv-verdict">&nbsp;</div>
+          <div class="try__sub" id="lv-sub">&nbsp;</div>
+          <div class="try__bar"><div class="try__fill" id="lv-fill"></div></div>
+        </div>
+      </div>
+      <p class="try__note">Polls pulled from public trackers; the engine adds the calibration, so the number is the model's, not the pollster's. <a href="#limits" style="color:var(--sig); text-decoration:underline; text-underline-offset:3px;">Limits apply.</a></p>
+    </div>
+
+    <h2 id="how">How it works, without the black box</h2>
+    <p>Politics Prediction is not one model and not a mystery. It is an <b>era-aware, dual-model ensemble</b>. It blends two kinds of signal: the polling that exists for a race, and the structural fundamentals that hold even when polling does not, such as incumbency, economic conditions, historical partisanship, and turnout. A closed-form rule weighs those two signals by how much real polling a race actually has, so a modern race leans on polls and a 1950s race leans on fundamentals, with no hand-tuning in between.</p>
+    <p>Three disciplines keep the number honest, and they are the reason to trust it:</p>
+    <ul>
+      <li><b>Leak-protected cross-validation.</b> When we score a race, the model may only use information that existed before that race. It can never quietly memorize the answer, which is the most common way a backtest lies.</li>
+      <li><b>A pre-committed stopping rule.</b> We decided how much to tune, and when to stop, before seeing the results, using a Bayesian comparison. The score is not the product of fishing until something looked good.</li>
+      <li><b>Adversarial significance testing.</b> We prove the gains are real with paired-bootstrap intervals and a Diebold-Mariano test, and we decompose calibration with a Murphy reliability curve rather than trusting a single headline number.</li>
+    </ul>
+    <p>That is the difference between a forecast and a story told after the fact. The full methodology is written for peer review; this is the plain-language version.</p>
+
+    <h2 id="edge">What the edge is worth</h2>
+    <p>A forecast is only interesting if a decision rides on it. Three kinds of buyers already have one:</p>
+    <ul>
+      <li><b>Funds and desks.</b> Price a race before the market moves. A 1.76x sharper read on the same events is the difference between setting the line and chasing it.</li>
+      <li><b>Campaigns and PACs.</b> See which races are actually winnable and where a marginal dollar changes the outcome, instead of pouring spend into a seat that was never in play.</li>
+      <li><b>Media and pollsters.</b> Call it first, and back the call with an eighty-year record instead of a gut feeling on election night.</li>
+    </ul>
+
+    <h2 id="limits">What we do not claim</h2>
+    <p>Recursivo is built on honest numbers, so here are the limits in plain language. Politics Prediction is a <b>restricted-domain forecaster</b> for Brazilian federal and state elections. Mixed-domain tournaments like Metaculus curate questions to sit near 50% uncertainty, which is a harder distribution than a panel where many governor and senate races are decided by double digits. The headline poll-era 0.018 also benefits from that structural ease, which is exactly why we lead the comparison with the tougher <b>aggregate 0.0475</b>, and it still beats every market and model number we could locate. We are not claiming a better general-purpose forecaster than GPT-5 or Gemini 3. We are claiming that on matched Brazilian races, no published tournament number from 2024 to 2026 matches this calibration.</p>
+
+    <h2 id="verified">Verified, not claimed</h2>
+    <p>This is the whole point of Recursivo. Most forecasting is graded by the people selling it. Ours is graded the way our behavior benchmark grades everyone else: against reality it never saw, with the honest number reported whether it flatters us or not. Politics Prediction is simply the product where that number already wins. The same discipline is what we are now turning on general human behavior with <b>AlphaPrediction</b>, where today even the best 2026 model still loses to a coin flip. <a href="../index.html#benchmark" style="color:var(--sig); text-decoration:underline; text-underline-offset:3px;">See how we grade the rest of the field.</a></p>
+
+    <h2 id="next">What is next</h2>
+    <p>The engine is live for Brazil today. We are extending it to new countries, wiring it to update <b>live through an election cycle</b> rather than once per race, and opening it through an API so a desk or a newsroom can query a race the way they query a data feed. Same recursion as the rest of Recursivo: measure against reality, keep only what verifies, compound.</p>
+
+    <div class="cta">
+      <a class="btn" href="../index.html#get">Get Politics Prediction<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M7 17L17 7M17 7H8M17 7v9"/></svg></a>
+      <span class="cta__note">Early access for funds, campaigns, and media desks.</span>
+    </div>
+  </article>
+</div>
+
+<script src="predict.js"></script>
+<script>
+(function(){
+  if(!window.RecursivoPolitics) return;
+  var $=function(id){return document.getElementById(id);};
+  var sel=$("lv-race"); if(!sel) return;
+  var asof=$("lv-asof"), matchup=$("lv-matchup"), pollsEl=$("lv-polls"), aggEl=$("lv-agg"),
+      pct=$("lv-pct"), verdict=$("lv-verdict"), sub=$("lv-sub"), fill=$("lv-fill");
+  var model=null, data=null;
+  function verdictText(p){
+    if(p>=0.85) return "Very likely win";
+    if(p>=0.6) return "Likely win";
+    if(p>0.4) return "Toss-up";
+    if(p>0.15) return "Likely loss";
+    return "Very likely loss";
+  }
+  function daysTo(iso){
+    var d=Math.round((new Date(iso+"T00:00:00")-new Date())/864e5);
+    return d>0?d:0;
+  }
+  function esc(s){var e=document.createElement("span"); e.textContent=s; return e.innerHTML;}
+  function render(){
+    if(!model||!data) return;
+    var race=data.races[sel.value|0];
+    var days=daysTo(race.election_date);
+    var leads=race.polls.map(function(p){return p.leadPP;});
+    var agg=leads.reduce(function(a,b){return a+b;},0)/leads.length;
+    matchup.textContent=race.matchup;
+    pollsEl.innerHTML=race.polls.map(function(p){
+      return '<div class="live__poll"><span class="inst">'+esc(p.institute)+'</span>'+
+             '<span class="num">+'+p.leadPP+' pp</span>'+
+             '<span>'+esc(p.detail)+'</span>'+
+             '<span class="dt">'+esc(p.date)+'</span>'+
+             '<a href="'+encodeURI(p.url)+'" target="_blank" rel="noopener">source</a></div>';
+    }).join("");
+    aggEl.innerHTML='Aggregate of '+leads.length+' polls: <b>'+esc(race.leader)+' +'+agg.toFixed(1)+' pp</b> \u00b7 <b>'+days+'</b> days to the election';
+    var r=model.forecast({office:race.office, leadPP:agg, days:days, incumbent:race.incumbent, regime:"center"});
+    var p=r.pWin;
+    pct.textContent=Math.round(p*100)+"%";
+    verdict.textContent=esc(race.leader)+": "+verdictText(p);
+    sub.textContent="poll map "+Math.round(r.pLinzer*100)+"% \u00b7 prior "+Math.round(r.pCohort*100)+"% \u00b7 cohort n="+r.cohortN;
+    fill.style.width=(p*100).toFixed(1)+"%";
+  }
+  sel.addEventListener("change", render);
+  Promise.all([
+    RecursivoPolitics.load("rates.json"),
+    fetch("races.json").then(function(x){return x.json();})
+  ]).then(function(res){
+    model=res[0]; data=res[1];
+    asof.textContent="polls as of "+data.asof;
+    sel.innerHTML=data.races.map(function(race,i){return '<option value="'+i+'">'+esc(race.label)+'</option>';}).join("");
+    render();
+  }).catch(function(){ if(sub) sub.textContent="live data failed to load"; });
+})();
+</script>
+
+<script>
+(function(){
+  var nav=document.querySelector(".nav");
+  if(nav){var f=function(){nav.classList.toggle("scrolled",window.scrollY>8);};f();window.addEventListener("scroll",f,{passive:true});}
+  var links=[].slice.call(document.querySelectorAll(".toc a"));
+  var secs=links.map(function(a){return document.querySelector(a.getAttribute("href"));}).filter(Boolean);
+  if(secs.length && "IntersectionObserver" in window){
+    var io=new IntersectionObserver(function(ents){
+      ents.forEach(function(e){ if(e.isIntersecting){ var id="#"+e.target.id; links.forEach(function(a){a.classList.toggle("active", a.getAttribute("href")===id);}); } });
+    },{rootMargin:"-20% 0px -70% 0px"});
+    secs.forEach(function(s){io.observe(s);});
+  }
+})();
+</script>
+</body>
+</html>

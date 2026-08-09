@@ -1,0 +1,59 @@
+{
+  "asof": "2026-08-03",
+  "source": "Wikipedia poll aggregation (pt.wikipedia.org)",
+  "races": [
+    {
+      "id": "br_pres_runoff",
+      "label": "Brazil 2026 · President (runoff)",
+      "office": "presidente",
+      "incumbent": 1,
+      "matchup": "Lula (PT) vs Flavio Bolsonaro (PL)",
+      "leader": "Lula",
+      "election_date": "2026-10-25",
+      "polls": [
+        {
+          "institute": "Nexus/BTG Pactual",
+          "date": "21 Jul - 2 Ago",
+          "leadPP": 1.0,
+          "detail": "46% vs 45%",
+          "url": "https://pt.wikipedia.org/wiki/Pesquisas_de_opini%C3%A3o_para_a_elei%C3%A7%C3%A3o_presidencial_no_Brasil_em_2026"
+        },
+        {
+          "institute": "Vox Brasil",
+          "date": "26 Jul - 28 Jul",
+          "leadPP": 6.4,
+          "detail": "47.5% vs 41.1%",
+          "url": "https://pt.wikipedia.org/wiki/Pesquisas_de_opini%C3%A3o_para_a_elei%C3%A7%C3%A3o_presidencial_no_Brasil_em_2026"
+        },
+        {
+          "institute": "PoderData",
+          "date": "26 Jul - 28 Jul",
+          "leadPP": 3.0,
+          "detail": "46% vs 43%",
+          "url": "https://pt.wikipedia.org/wiki/Pesquisas_de_opini%C3%A3o_para_a_elei%C3%A7%C3%A3o_presidencial_no_Brasil_em_2026"
+        },
+        {
+          "institute": "Alfa/TMC",
+          "date": "23 Jul - 28 Jul",
+          "leadPP": 7.0,
+          "detail": "48% vs 41%",
+          "url": "https://pt.wikipedia.org/wiki/Pesquisas_de_opini%C3%A3o_para_a_elei%C3%A7%C3%A3o_presidencial_no_Brasil_em_2026"
+        },
+        {
+          "institute": "AtlasIntel",
+          "date": "22 Jul - 27 Jul",
+          "leadPP": 6.3,
+          "detail": "49.2% vs 42.9%",
+          "url": "https://pt.wikipedia.org/wiki/Pesquisas_de_opini%C3%A3o_para_a_elei%C3%A7%C3%A3o_presidencial_no_Brasil_em_2026"
+        },
+        {
+          "institute": "Nexus/BTG",
+          "date": "24 Jul - 26 Jul",
+          "leadPP": 4.0,
+          "detail": "47% vs 43%",
+          "url": "https://pt.wikipedia.org/wiki/Pesquisas_de_opini%C3%A3o_para_a_elei%C3%A7%C3%A3o_presidencial_no_Brasil_em_2026"
+        }
+      ]
+    }
+  ]
+}
