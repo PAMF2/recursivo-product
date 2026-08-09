@@ -1,4 +1,5 @@
 results/submissions.json
+results/events.jsonl
 data/waitlist.jsonl
 node_modules/
 .DS_Store

@@ -16,14 +16,20 @@
 const http = require("http");
 const fs = require("fs");
 const path = require("path");
+const crypto = require("crypto");
 
 const ROOT = __dirname;
 const SITE = path.join(ROOT, "site");
 const DATA = path.join(ROOT, "data");
 const RESULTS = path.join(ROOT, "results");
-const SUBMISSIONS = path.join(RESULTS, "submissions.json");
+const SUBMISSIONS = process.env.RECURSIVO_SUBMISSIONS_FILE || path.join(RESULTS, "submissions.json");
+const EVENTS = process.env.RECURSIVO_EVENTS_FILE || path.join(RESULTS, "events.jsonl");
 const WAITLIST = path.join(DATA, "waitlist.jsonl");
 const API_KEY = process.env.RECURSIVO_API_KEY || "";
+const RECEIPT_VERSION = "submit-receipt-v1";
+const METRIC_ID = "exact-match+mean-1-TV-v1";
+const GROUND_TRUTH_FILE = "data/ground_truth_wave4.json";
+const GROUND_TRUTH_SHA256 = "9a8251d1c403c3d10eddc14416f120e527ed37cebed37f21be4511e6ccb33867";
 
 const readJSON = (p, fallback) => {
   try { return JSON.parse(fs.readFileSync(p, "utf8")); } catch { return fallback; }
@@ -32,6 +38,47 @@ const GROUND_TRUTH = readJSON(path.join(DATA, "ground_truth_wave4.json"), {});
 const LEADERBOARD = readJSON(path.join(RESULTS, "leaderboard.json"), { rows: [] });
 const SEGMENTS = readJSON(path.join(DATA, "segments.json"), {});
 const PREDICT_PANEL = readJSON(path.join(DATA, "predict_panel.json"), {});
+const CANONICAL_ITEMS = Object.keys(GROUND_TRUTH).sort();
+const SCOREABLE_PAIRS = CANONICAL_ITEMS.reduce((n, item) => n + Object.keys(GROUND_TRUTH[item].human || {}).length, 0);
+
+function appendEvent(event, scoredPairs, receiptHash) {
+  const record = { timestamp: new Date().toISOString(), event, status: "success", scored_pair_count: scoredPairs };
+  if (receiptHash) record.receipt_hash = receiptHash;
+  fs.mkdirSync(path.dirname(EVENTS), { recursive: true });
+  fs.appendFileSync(EVENTS, JSON.stringify(record) + "\n");
+}
+
+function writeJSONAtomic(file, value) {
+  fs.mkdirSync(path.dirname(file), { recursive: true });
+  const temporary = path.join(path.dirname(file), `.${path.basename(file)}.${process.pid}.${crypto.randomBytes(8).toString("hex")}.tmp`);
+  try {
+    fs.writeFileSync(temporary, JSON.stringify(value, null, 1));
+    fs.renameSync(temporary, file);
+  } finally {
+    try { fs.unlinkSync(temporary); } catch {}
+  }
+}
+
+function submittedLeaderboardEntry(receipt) {
+  return {
+    kind: "submitted",
+    ranked: false,
+    label: receipt.comparability_label,
+    comparable_to_canonical: receipt.comparable_to_canonical,
+    simulator: receipt.simulator,
+    cohort: receipt.cohort,
+    coverage: receipt.coverage,
+    metric: receipt.metric,
+    result: receipt.result,
+    source_id: receipt.source_id,
+    ground_truth: receipt.ground_truth,
+    receipt_hash: receipt.reproducibility_hash,
+  };
+}
+
+function leaderboardResponse() {
+  return { ...LEADERBOARD, rows: LEADERBOARD.rows || [], submitted_results: readJSON(SUBMISSIONS, []).map(submittedLeaderboardEntry) };
+}
 
 // ---------- metrics (mirrors bench/metrics.py) ----------
 const norm = (s) => String(s).trim().toLowerCase();
@@ -150,6 +197,84 @@ function rank(individual, matched) {
   };
 }
 
+function requireIdentifier(value, name) {
+  if (typeof value !== "string" || value.trim().length < 1 || value.trim().length > 120) {
+    return `${name} must be a trimmed string of 1-120 characters`;
+  }
+  if (value !== value.trim()) return `${name} must be a trimmed string of 1-120 characters`;
+  return null;
+}
+
+function validateSubmission(body) {
+  let error = requireIdentifier(body.simulator, "simulator") || requireIdentifier(body.source_id, "source_id");
+  if (error) return { error };
+  if (!Array.isArray(body.predictions) || body.predictions.length < 1 || body.predictions.length > SCOREABLE_PAIRS) {
+    return { error: `predictions must be an array of 1-${SCOREABLE_PAIRS} entries` };
+  }
+  const seen = new Set();
+  const predictions = [];
+  for (let index = 0; index < body.predictions.length; index += 1) {
+    const prediction = body.predictions[index];
+    if (!prediction || typeof prediction !== "object" || Array.isArray(prediction)) return { error: `prediction ${index} must be an object` };
+    if (!("pid" in prediction) || !("item" in prediction) || !("answer" in prediction)) return { error: `prediction ${index} requires pid, item, and answer` };
+    const item = String(prediction.item);
+    const pid = String(prediction.pid);
+    const gi = GROUND_TRUTH[item];
+    if (!gi) return { error: `prediction ${index} has unknown item` };
+    if (!Object.prototype.hasOwnProperty.call(gi.human || {}, pid)) return { error: `prediction ${index} has unknown participant for item` };
+    const answer = canonicalLabel(prediction.answer, gi.opts);
+    const canonicalAnswer = gi.opts.find((option) => norm(option) === norm(answer));
+    if (canonicalAnswer === undefined) return { error: `prediction ${index} has invalid answer` };
+    const pair = `${item}\u0000${pid}`;
+    if (seen.has(pair)) return { error: `prediction ${index} duplicates an item/participant pair` };
+    seen.add(pair);
+    predictions.push({ item, pid, answer: canonicalAnswer });
+  }
+  predictions.sort((a, b) => a.item.localeCompare(b.item) || a.pid.localeCompare(b.pid));
+  return { predictions };
+}
+
+function createReceipt(body, predictions) {
+  const hashInput = {
+    receipt_version: RECEIPT_VERSION,
+    simulator: body.simulator,
+    source_id: body.source_id,
+    ground_truth_sha256: GROUND_TRUTH_SHA256,
+    metric_id: METRIC_ID,
+    predictions,
+  };
+  const reproducibilityHash = crypto.createHash("sha256").update(JSON.stringify(hashInput)).digest("hex");
+  const report = score(predictions, GROUND_TRUTH, SEGMENTS);
+  const items = [...new Set(predictions.map((prediction) => prediction.item))].sort();
+  const participants = new Set(predictions.map((prediction) => prediction.pid));
+  const comparable = predictions.length === SCOREABLE_PAIRS && items.length === CANONICAL_ITEMS.length && items.every((item, i) => item === CANONICAL_ITEMS[i]);
+  return {
+    receipt_version: RECEIPT_VERSION,
+    receipt_id: reproducibilityHash,
+    created_at: new Date().toISOString(),
+    simulator: body.simulator,
+    source_id: body.source_id,
+    ground_truth: { filename: GROUND_TRUTH_FILE, sha256: GROUND_TRUTH_SHA256 },
+    cohort: { item_ids: items, unique_participant_count: participants.size, scored_pair_count: predictions.length },
+    coverage: { numerator: predictions.length, denominator: SCOREABLE_PAIRS },
+    metric: {
+      id: METRIC_ID,
+      individual_definition: "exact-match against each real participant's held-out answer",
+      group_definition: "1 minus mean total-variation distance across submitted item distributions",
+    },
+    result: {
+      individual_accuracy: report.individual_accuracy,
+      group_level_1_minus_tv: report.group_level,
+      matched_baseline: matchedBaseline(predictions, GROUND_TRUTH),
+    },
+    comparable_to_canonical: comparable,
+    comparability_label: comparable
+      ? "submitted result — complete canonical cohort, eligible for separate review"
+      : "submitted result — partial cohort, not ranked against canonical results",
+    reproducibility_hash: reproducibilityHash,
+  };
+}
+
 function predict(body) {
   const item = body.item;
   const entry = item ? PREDICT_PANEL[item] : null;
@@ -217,7 +342,7 @@ const server = http.createServer(async (req, res) => {
     if (p === "/") return sendFile(res, path.join(SITE, "index.html"));
     if (route === "/deck") return sendFile(res, path.join(SITE, "deck.html"));
     if (route === "/health") return sendJSON(res, 200, { status: "ok", items: Object.keys(GROUND_TRUTH).length, majority_baseline: MAJORITY, segments: !!Object.keys(SEGMENTS).length });
-    if (route === "/leaderboard") return sendJSON(res, 200, LEADERBOARD);
+    if (route === "/leaderboard") return sendJSON(res, 200, leaderboardResponse());
     if (route === "/items") return sendJSON(res, 200, Object.entries(GROUND_TRUTH).map(([k, v]) => ({ item: k, options: v.opts })));
     if (route === "/predict") return sendJSON(res, 200, { usage: "POST /api/predict {item?|question?, options?}", overall: PREDICT_PANEL._overall || {}, known_items: Object.keys(PREDICT_PANEL).filter((k) => k !== "_overall").length });
     // static under site/
@@ -247,7 +372,27 @@ const server = http.createServer(async (req, res) => {
 
     if (API_KEY && req.headers["x-api-key"] !== API_KEY) return sendJSON(res, 401, { error: "X-API-Key required" });
 
-    if (route === "/predict") return sendJSON(res, 200, predict(body));
+    if (route === "/predict") {
+      const result = predict(body);
+      appendEvent("predict_result", result.n_verified || 0);
+      return sendJSON(res, 200, result);
+    }
+
+    if (route === "/submit") {
+      const validated = validateSubmission(body);
+      if (validated.error) return sendJSON(res, 400, { error: validated.error });
+      const receipt = createReceipt(body, validated.predictions);
+      const submissions = readJSON(SUBMISSIONS, []);
+      const existing = submissions.find((entry) => entry.reproducibility_hash === receipt.reproducibility_hash);
+      if (existing) {
+        appendEvent("submit_result", existing.cohort.scored_pair_count, existing.reproducibility_hash);
+        return sendJSON(res, 200, { ...existing, replayed: true });
+      }
+      submissions.push(receipt);
+      writeJSONAtomic(SUBMISSIONS, submissions);
+      appendEvent("submit_result", receipt.cohort.scored_pair_count, receipt.reproducibility_hash);
+      return sendJSON(res, 200, { ...receipt, replayed: false });
+    }
 
     const preds = body.predictions || [];
     if (!Array.isArray(preds) || !preds.length) return sendJSON(res, 400, { error: "predictions: [{pid,item,answer}] required" });
@@ -256,12 +401,7 @@ const server = http.createServer(async (req, res) => {
     rep.matched_baseline = matchedBaseline(preds, GROUND_TRUTH);
     rep.ranking = rank(rep.individual_accuracy, rep.matched_baseline);
     rep.thesis = "recursion only compounds where the outcome is verifiable";
-    if (route === "/submit") {
-      const subs = readJSON(SUBMISSIONS, []);
-      subs.push({ ts: Date.now(), simulator: rep.simulator, contact: body.contact || null, individual: rep.individual_accuracy, group_level: rep.group_level, n: rep.n_predictions });
-      fs.writeFileSync(SUBMISSIONS, JSON.stringify(subs, null, 1));
-      rep.submitted = true; rep.submission_count = subs.length;
-    }
+    appendEvent("verify_result", rep.n_predictions);
     return sendJSON(res, 200, rep);
   }
 
@@ -269,6 +409,7 @@ const server = http.createServer(async (req, res) => {
 });
 
 const PORT = parseInt(process.argv[2] || process.env.PORT || "8020", 10);
-server.listen(PORT, "0.0.0.0", () => {
-  console.log(`Recursivo server on http://0.0.0.0:${PORT}  items=${Object.keys(GROUND_TRUTH).length} majority=${MAJORITY}`);
+const HOST = process.env.RECURSIVO_HOST || "0.0.0.0";
+server.listen(PORT, HOST, () => {
+  console.log(`Recursivo server on http://${HOST}:${PORT}  items=${Object.keys(GROUND_TRUTH).length} majority=${MAJORITY}`);
 });

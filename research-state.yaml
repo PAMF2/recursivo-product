@@ -1,0 +1,31 @@
+project: recursivo-product-launch
+question: "Can the customer-facing Predict + Verify product pass launch gates and produce measurable buyer value by 2026-08-12?"
+objective: launch_readiness
+metric:
+  name: ppo_pass_rate
+  definition: "passed product preflight checks divided by total deterministic checks"
+  baseline: 0.0
+  target: 1.0
+  counter_metrics:
+    - api_error_rate
+    - smoke_duration_ms
+    - unverified_claim_count
+    - paid_decisions
+    - buyer_signals
+horizon:
+  launch_date: 2026-08-12
+  cadence: "one gated iteration per CEO cycle"
+status: active
+current_hypothesis: H1-product-preflight
+last_verified: null
+experiments:
+  - id: H1-product-preflight
+    status: running
+    protocol: experiments/launch-readiness/protocol.md
+    verifier: "node tests/ppo.js && node tests/smoke.js"
+    expected: "all product routes and error boundaries pass offline"
+stop_rules:
+  - "any PPO check fails"
+  - "product server cannot start locally"
+  - "claim or cohort changes without evidence"
+  - "irreversible action lacks human approval"

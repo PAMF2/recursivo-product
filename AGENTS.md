@@ -22,17 +22,17 @@ Ship a usable product that lets a customer:
 - Do not fabricate customers, metrics, claims, or data.
 - Never push, publish, deploy, spend, contact customers, or change credentials during an autonomous run. Those actions require a human gate in the Command Center.
 - Do not reset, clean, or delete unrelated files.
-
 ## Verification
 
 The product server is Node stdlib only:
 
 ```bash
+node tests/ppo.js
 node tests/smoke.js
 node --check server.js
 ```
 
-A product change is PASS only when the changed path is exercised through the running HTTP server. API changes must cover success and the relevant error/auth boundary. Keep the smoke test deterministic and offline.
+A product change is PASS only when the changed path is exercised through the running HTTP server. API changes must cover success and the relevant error/auth boundary. Keep the PPO gate deterministic and offline.
 
 ## Runtime
 
