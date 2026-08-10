@@ -89,7 +89,7 @@ async function main() {
   const eventsFile = path.join(runtime, "events.jsonl");
   const child = spawn(process.execPath, [path.join(ROOT, "server.js"), String(port)], {
     cwd: ROOT,
-    env: { ...process.env, RECURSIVO_SUBMISSIONS_FILE: submissionsFile, RECURSIVO_EVENTS_FILE: eventsFile, RECURSIVO_API_KEY: "", RECURSIVO_HOST: "127.0.0.1" },
+    env: { ...process.env, RECURSIVO_ENV: "test", RECURSIVO_SUBMISSIONS_FILE: submissionsFile, RECURSIVO_EVENTS_FILE: eventsFile, RECURSIVO_API_KEY: "", RECURSIVO_HOST: "127.0.0.1" },
     stdio: ["ignore", "pipe", "pipe"],
   });
   let protectedChild;
@@ -138,7 +138,7 @@ async function main() {
     const protectedEventsFile = path.join(runtime, "protected-events.jsonl");
     protectedChild = spawn(process.execPath, [path.join(ROOT, "server.js"), String(protectedPort)], {
       cwd: ROOT,
-      env: { ...process.env, RECURSIVO_SUBMISSIONS_FILE: protectedSubmissionsFile, RECURSIVO_EVENTS_FILE: protectedEventsFile, RECURSIVO_API_KEY: " secret ", RECURSIVO_HOST: "127.0.0.1" },
+      env: { ...process.env, RECURSIVO_ENV: "test", RECURSIVO_SUBMISSIONS_FILE: protectedSubmissionsFile, RECURSIVO_EVENTS_FILE: protectedEventsFile, RECURSIVO_API_KEY: " secret ", RECURSIVO_HOST: "127.0.0.1" },
       stdio: ["ignore", "pipe", "pipe"],
     });
     await waitForHealth(protectedPort);

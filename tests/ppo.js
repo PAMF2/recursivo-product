@@ -47,7 +47,11 @@ async function waitForHealth() {
 }
 
 async function main() {
-  const child = spawn(process.execPath, [path.join(ROOT, "server.js"), String(port)], { cwd: ROOT, stdio: ["ignore", "pipe", "pipe"] });
+  const child = spawn(process.execPath, [path.join(ROOT, "server.js"), String(port)], {
+    cwd: ROOT,
+    env: { ...process.env, RECURSIVO_ENV: "test" },
+    stdio: ["ignore", "pipe", "pipe"],
+  });
   let stderr = "";
   child.stderr.on("data", (chunk) => { stderr += chunk; });
   const results = [];
