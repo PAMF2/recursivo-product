@@ -25,10 +25,17 @@ curl -X POST http://127.0.0.1:8020/api/predict \
   -d '{"item":"Q157"}'
 ```
 
-Para proteger POSTs localmente:
+`POST /api/submit` fica indisponível sem uma chave configurada. Ao configurar a chave, envie o mesmo valor no header `X-API-Key`. `POST /api/predict` e `POST /api/verify` permanecem públicos.
 
 ```bash
 RECURSIVO_API_KEY=local-secret node server.js 8020
+```
+
+```bash
+curl -X POST http://127.0.0.1:8020/api/submit \
+  -H 'Content-Type: application/json' \
+  -H 'X-API-Key: local-secret' \
+  -d '{"simulator":"nome","source_id":"versao-local","predictions":[{"pid":"3","item":"Q157","answer":"I slightly favor program A"}]}'
 ```
 
 ## Submit e recibos reproduzíveis

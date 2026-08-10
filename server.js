@@ -25,7 +25,7 @@ const RESULTS = path.join(ROOT, "results");
 const SUBMISSIONS = process.env.RECURSIVO_SUBMISSIONS_FILE || path.join(RESULTS, "submissions.json");
 const EVENTS = process.env.RECURSIVO_EVENTS_FILE || path.join(RESULTS, "events.jsonl");
 const WAITLIST = path.join(DATA, "waitlist.jsonl");
-const API_KEY = process.env.RECURSIVO_API_KEY || "";
+const API_KEY = (process.env.RECURSIVO_API_KEY || "").trim();
 const RECEIPT_VERSION = "submit-receipt-v1";
 const METRIC_ID = "exact-match+mean-1-TV-v1";
 const GROUND_TRUTH_FILE = "data/ground_truth_wave4.json";
@@ -357,6 +357,10 @@ const server = http.createServer(async (req, res) => {
   if (req.method === "POST") {
     const known = ["/verify", "/submit", "/predict", "/early-access"];
     if (!known.includes(route)) return sendJSON(res, 404, { error: "POST /api/verify, /api/predict, /api/submit or /api/early-access" });
+    if (route === "/submit") {
+      if (!API_KEY) return sendJSON(res, 503, { error: "submissions unavailable: RECURSIVO_API_KEY not configured" });
+      if (req.headers["x-api-key"] !== API_KEY) return sendJSON(res, 401, { error: "X-API-Key required" });
+    }
     let body;
     try { body = await readBody(req); } catch (e) { return sendJSON(res, 400, { error: "bad json: " + e.message }); }
 
@@ -369,8 +373,6 @@ const server = http.createServer(async (req, res) => {
       try { position = fs.readFileSync(WAITLIST, "utf8").trim().split("\n").filter(Boolean).length; } catch {}
       return sendJSON(res, 200, { ok: true, email, position });
     }
-
-    if (API_KEY && req.headers["x-api-key"] !== API_KEY) return sendJSON(res, 401, { error: "X-API-Key required" });
 
     if (route === "/predict") {
       const result = predict(body);

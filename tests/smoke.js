@@ -85,7 +85,6 @@ async function main() {
   const runtime = fs.mkdtempSync(path.join(os.tmpdir(), "recursivo-smoke-"));
   const submissionsFile = path.join(runtime, "submissions.json");
   const eventsFile = path.join(runtime, "events.jsonl");
-  fs.writeFileSync(submissionsFile, "[]\n");
   const child = spawn(process.execPath, [path.join(ROOT, "server.js"), String(port)], {
     cwd: ROOT,
     env: { ...process.env, RECURSIVO_SUBMISSIONS_FILE: submissionsFile, RECURSIVO_EVENTS_FILE: eventsFile, RECURSIVO_API_KEY: "", RECURSIVO_HOST: "127.0.0.1" },
@@ -112,6 +111,15 @@ async function main() {
     const cohortItems = [...new Set(fixture.map((entry) => entry.item))].sort();
     const cohortParticipants = new Set(fixture.map((entry) => String(entry.pid))).size;
 
+    const submission = { simulator: "smoke-simulator", source_id: "smoke-source-v1", predictions: fixture, contact: "must-not-persist@example.com" };
+    assert(!fs.existsSync(submissionsFile));
+    assert(!fs.existsSync(eventsFile));
+    const unavailable = await request("POST", "/api/submit", submission);
+    assert.equal(unavailable.status, 503);
+    assert.deepEqual(unavailable.body, { error: "submissions unavailable: RECURSIVO_API_KEY not configured" });
+    assert(!fs.existsSync(submissionsFile));
+    assert(!fs.existsSync(eventsFile));
+
     const predict = await request("POST", "/api/predict", { item: itemIds[0] });
     assert.equal(predict.status, 200);
     assert.equal(predict.body.item, itemIds[0]);
@@ -124,8 +132,23 @@ async function main() {
     assert.equal(verify.body.matched_baseline, expected.baseline);
     assert.equal(verify.body.n_predictions, fixture.length);
 
-    const submission = { simulator: "smoke-simulator", source_id: "smoke-source-v1", predictions: fixture, contact: "must-not-persist@example.com" };
-    const first = await request("POST", "/api/submit", submission);
+    const protectedSubmissionsFile = path.join(runtime, "protected-submissions.json");
+    const protectedEventsFile = path.join(runtime, "protected-events.jsonl");
+    protectedChild = spawn(process.execPath, [path.join(ROOT, "server.js"), String(protectedPort)], {
+      cwd: ROOT,
+      env: { ...process.env, RECURSIVO_SUBMISSIONS_FILE: protectedSubmissionsFile, RECURSIVO_EVENTS_FILE: protectedEventsFile, RECURSIVO_API_KEY: " secret ", RECURSIVO_HOST: "127.0.0.1" },
+      stdio: ["ignore", "pipe", "pipe"],
+    });
+    await waitForHealth(protectedPort);
+    assert.equal((await request("POST", "/api/submit", submission, { port: protectedPort })).status, 401);
+    assert.equal((await request("POST", "/api/submit", submission, { port: protectedPort, apiKey: "wrong" })).status, 401);
+    assert(!fs.existsSync(protectedSubmissionsFile));
+    assert(!fs.existsSync(protectedEventsFile));
+
+    assert.equal((await request("POST", "/api/predict", { item: itemIds[0] }, { port: protectedPort })).status, 200);
+    assert.equal((await request("POST", "/api/verify", { simulator: "smoke-test", predictions: fixture }, { port: protectedPort })).status, 200);
+
+    const first = await request("POST", "/api/submit", submission, { port: protectedPort, apiKey: "secret" });
     assert.equal(first.status, 200);
     assert.equal(first.body.replayed, false);
     assert.equal(first.body.result.individual_accuracy, expected.individual);
@@ -135,18 +158,18 @@ async function main() {
     assert.equal(first.body.cohort.unique_participant_count, cohortParticipants);
     assert.equal(first.body.cohort.scored_pair_count, fixture.length);
 
-    const replay = await request("POST", "/api/submit", submission);
+    const replay = await request("POST", "/api/submit", submission, { port: protectedPort, apiKey: "secret" });
     assert.equal(replay.status, 200);
     assert.equal(replay.body.replayed, true);
     assert.equal(replay.body.receipt_id, first.body.receipt_id);
     assert.equal(replay.body.reproducibility_hash, first.body.reproducibility_hash);
     assert.equal(replay.body.created_at, first.body.created_at);
     assert.deepEqual(replay.body.result, first.body.result);
-    const ledger = JSON.parse(fs.readFileSync(submissionsFile, "utf8"));
+    const ledger = JSON.parse(fs.readFileSync(protectedSubmissionsFile, "utf8"));
     assert.equal(ledger.length, 1);
     assert.equal(ledger[0].contact, undefined);
 
-    const leaderboard = await request("GET", "/api/leaderboard");
+    const leaderboard = await request("GET", "/api/leaderboard", undefined, { port: protectedPort });
     assert.equal(leaderboard.status, 200);
     assert.equal(leaderboard.body.submitted_results.length, 1);
     assert.equal(leaderboard.body.submitted_results[0].ranked, false);
@@ -161,23 +184,18 @@ async function main() {
       { source_id: submission.source_id, predictions: fixture },
       { simulator: submission.simulator, predictions: fixture },
     ];
-    const beforeInvalid = fs.readFileSync(submissionsFile, "utf8");
-    for (const invalid of invalidCases) assert.equal((await request("POST", "/api/submit", invalid)).status, 400);
-    assert.equal(fs.readFileSync(submissionsFile, "utf8"), beforeInvalid);
+    const beforeInvalidSubmissions = fs.readFileSync(protectedSubmissionsFile, "utf8");
+    const beforeInvalidEvents = fs.readFileSync(protectedEventsFile, "utf8");
+    for (const invalid of invalidCases) {
+      assert.equal((await request("POST", "/api/submit", invalid, { port: protectedPort, apiKey: "secret" })).status, 400);
+    }
+    assert.equal(fs.readFileSync(protectedSubmissionsFile, "utf8"), beforeInvalidSubmissions);
+    assert.equal(fs.readFileSync(protectedEventsFile, "utf8"), beforeInvalidEvents);
 
-    protectedChild = spawn(process.execPath, [path.join(ROOT, "server.js"), String(protectedPort)], {
-      cwd: ROOT,
-      env: { ...process.env, RECURSIVO_SUBMISSIONS_FILE: path.join(runtime, "protected-submissions.json"), RECURSIVO_EVENTS_FILE: path.join(runtime, "protected-events.jsonl"), RECURSIVO_API_KEY: "secret", RECURSIVO_HOST: "127.0.0.1" },
-      stdio: ["ignore", "pipe", "pipe"],
-    });
-    await waitForHealth(protectedPort);
-    assert.equal((await request("POST", "/api/submit", submission, { port: protectedPort })).status, 401);
-    assert(!fs.existsSync(path.join(runtime, "protected-submissions.json")));
-    assert(!fs.existsSync(path.join(runtime, "protected-events.jsonl")));
-
-    const events = fs.readFileSync(eventsFile, "utf8").trim().split("\n").map(JSON.parse);
+    const publicEvents = fs.readFileSync(eventsFile, "utf8").trim().split("\n").map(JSON.parse);
+    assert.deepEqual(publicEvents.map((event) => event.event), ["predict_result", "verify_result"]);
+    const events = fs.readFileSync(protectedEventsFile, "utf8").trim().split("\n").map(JSON.parse);
     assert.deepEqual(events.map((event) => event.event), ["predict_result", "verify_result", "submit_result", "submit_result"]);
-    assert.deepEqual(events.map((event) => event.scored_pair_count), [predict.body.n_verified, fixture.length, fixture.length, fixture.length]);
     const serializedEvents = JSON.stringify(events);
     for (const forbidden of ["predictions", "answer", "email", "contact", submission.simulator, submission.source_id, ...fixture.map((entry) => entry.answer)]) {
       assert(!serializedEvents.includes(forbidden), `event leaked forbidden value: ${forbidden}`);

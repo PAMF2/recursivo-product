@@ -15,13 +15,14 @@ Ship a usable product that lets a customer:
 ## Maker contract
 
 - Read `AGENTS.md` and `README.md` before editing.
+- Work only on branch `agents/product-build` during autonomous runs. If the branch is missing, stop with `NEEDS_HUMAN`.
 - Preserve unrelated work already present.
 - Build complete behavior, not placeholders or fake fallbacks.
 - Keep the runtime dependency-free unless the task explicitly justifies a dependency.
 - Do not modify research or training systems from this repo.
 - Do not fabricate customers, metrics, claims, or data.
-- Never push, publish, deploy, spend, contact customers, or change credentials during an autonomous run. Those actions require a human gate in the Command Center.
-- Do not reset, clean, or delete unrelated files.
+- You may create local commits on `agents/product-build` after tests pass. Use a clear conventional message that names the product change. Never push, merge, publish, deploy, spend, contact customers, or change credentials during an autonomous run. Those actions require a human gate in the Command Center.
+- Do not reset, clean, force-push, or delete unrelated files.
 ## Verification
 
 The product server is Node stdlib only:
