@@ -39,10 +39,18 @@ async function main() {
     const second = await request("POST", "/api/scenario/run", input);
     assert.equal(first.status, 200);
     assert.deepEqual(first.body, second.body);
-    assert.equal(first.body.engine, "scenario-lab-local-v1");
+    assert.equal(first.body.engine, "scenario-lab-local-v2");
     assert.equal(first.body.config.agents, 24);
     assert.equal(first.body.events_processed, 192);
     assert.equal(first.body.trajectory.length, 9);
+    for (const mode of ["trust_game", "ultimatum_game"]) {
+      const response = await request("POST", "/api/scenario/run", { mode, topic: "test", agents: 24, rounds: 8, seed: 42 });
+      assert.equal(response.status, 200);
+      assert.equal(response.body.config.mode, mode);
+      assert.equal(response.body.events_processed, 192);
+      assert(response.body.readout.metric);
+      assert.equal(response.body.verified, false);
+    }
     assert.match(first.body.reproducibility_hash, /^[0-9a-f]{64}$/);
     const invalid = await request("POST", "/api/scenario/run", { agents: 1, rounds: 8, seed: 42 });
     assert.equal(invalid.status, 400);
