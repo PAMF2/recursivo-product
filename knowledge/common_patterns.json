@@ -1,0 +1,24 @@
+{
+  "position_inversion": {
+    "items": [
+      "Q157",
+      "Q158"
+    ],
+    "description": "Pessoas que se favorecem program A em item 1 mudam para B em item 2"
+  },
+  "social_desirability": {
+    "items": [
+      "Q157",
+      "Q159"
+    ],
+    "description": "Respostas mais positivas para programas mais populares"
+  },
+  "polarization": {
+    "items": [
+      "Q161",
+      "Q162",
+      "Q163"
+    ],
+    "description": "Aumento de polarização com distância temporal"
+  }
+}

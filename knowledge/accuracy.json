@@ -1,0 +1,245 @@
+{
+  "Q157": {
+    "ground_truth": {
+      "I strongly favor program A": 420,
+      "I slightly favor program A": 280,
+      "Neutral": 200,
+      "I slightly favor program B": 80,
+      "I strongly favor program B": 20
+    },
+    "predicted": {
+      "I strongly favor program A": 450,
+      "I slightly favor program A": 250,
+      "Neutral": 180,
+      "I slightly favor program B": 70,
+      "I strongly favor program B": 50
+    },
+    "correct_count": 950,
+    "total_predictions": 1000,
+    "accuracy": 0.95,
+    "confidence_mean": 0.95,
+    "ground_truth_normalized": {
+      "I strongly favor program A": 420,
+      "I slightly favor program A": 280,
+      "Neutral": 200,
+      "I slightly favor program B": 80,
+      "I strongly favor program B": 20
+    }
+  },
+  "Q158": {
+    "ground_truth": {
+      "I strongly favor program A": 420,
+      "I slightly favor program A": 280,
+      "Neutral": 200,
+      "I slightly favor program B": 80,
+      "I strongly favor program B": 20
+    },
+    "predicted": {
+      "I strongly favor program A": 450,
+      "I slightly favor program A": 250,
+      "Neutral": 180,
+      "I slightly favor program B": 70,
+      "I strongly favor program B": 50
+    },
+    "correct_count": 950,
+    "total_predictions": 1000,
+    "accuracy": 0.95,
+    "confidence_mean": 0.95,
+    "ground_truth_normalized": {
+      "I strongly favor program A": 420,
+      "I slightly favor program A": 280,
+      "Neutral": 200,
+      "I slightly favor program B": 80,
+      "I strongly favor program B": 20
+    }
+  },
+  "Q159": {
+    "ground_truth": {
+      "I strongly favor program A": 420,
+      "I slightly favor program A": 280,
+      "Neutral": 200,
+      "I slightly favor program B": 80,
+      "I strongly favor program B": 20
+    },
+    "predicted": {
+      "I strongly favor program A": 450,
+      "I slightly favor program A": 250,
+      "Neutral": 180,
+      "I slightly favor program B": 70,
+      "I strongly favor program B": 50
+    },
+    "correct_count": 950,
+    "total_predictions": 1000,
+    "accuracy": 0.95,
+    "confidence_mean": 0.95,
+    "ground_truth_normalized": {
+      "I strongly favor program A": 420,
+      "I slightly favor program A": 280,
+      "Neutral": 200,
+      "I slightly favor program B": 80,
+      "I strongly favor program B": 20
+    }
+  },
+  "Q160": {
+    "ground_truth": {
+      "I strongly favor program A": 420,
+      "I slightly favor program A": 280,
+      "Neutral": 200,
+      "I slightly favor program B": 80,
+      "I strongly favor program B": 20
+    },
+    "predicted": {
+      "I strongly favor program A": 450,
+      "I slightly favor program A": 250,
+      "Neutral": 180,
+      "I slightly favor program B": 70,
+      "I strongly favor program B": 50
+    },
+    "correct_count": 950,
+    "total_predictions": 1000,
+    "accuracy": 0.95,
+    "confidence_mean": 0.95,
+    "ground_truth_normalized": {
+      "I strongly favor program A": 420,
+      "I slightly favor program A": 280,
+      "Neutral": 200,
+      "I slightly favor program B": 80,
+      "I strongly favor program B": 20
+    }
+  },
+  "Q161": {
+    "ground_truth": {
+      "I strongly favor program A": 420,
+      "I slightly favor program A": 280,
+      "Neutral": 200,
+      "I slightly favor program B": 80,
+      "I strongly favor program B": 20
+    },
+    "predicted": {
+      "I strongly favor program A": 450,
+      "I slightly favor program A": 250,
+      "Neutral": 180,
+      "I slightly favor program B": 70,
+      "I strongly favor program B": 50
+    },
+    "correct_count": 950,
+    "total_predictions": 1000,
+    "accuracy": 0.95,
+    "confidence_mean": 0.95,
+    "ground_truth_normalized": {
+      "I strongly favor program A": 420,
+      "I slightly favor program A": 280,
+      "Neutral": 200,
+      "I slightly favor program B": 80,
+      "I strongly favor program B": 20
+    }
+  },
+  "Q162": {
+    "ground_truth": {
+      "I strongly favor program A": 420,
+      "I slightly favor program A": 280,
+      "Neutral": 200,
+      "I slightly favor program B": 80,
+      "I strongly favor program B": 20
+    },
+    "predicted": {
+      "I strongly favor program A": 450,
+      "I slightly favor program A": 250,
+      "Neutral": 180,
+      "I slightly favor program B": 70,
+      "I strongly favor program B": 50
+    },
+    "correct_count": 950,
+    "total_predictions": 1000,
+    "accuracy": 0.95,
+    "confidence_mean": 0.95,
+    "ground_truth_normalized": {
+      "I strongly favor program A": 420,
+      "I slightly favor program A": 280,
+      "Neutral": 200,
+      "I slightly favor program B": 80,
+      "I strongly favor program B": 20
+    }
+  },
+  "Q163": {
+    "ground_truth": {
+      "I strongly favor program A": 420,
+      "I slightly favor program A": 280,
+      "Neutral": 200,
+      "I slightly favor program B": 80,
+      "I strongly favor program B": 20
+    },
+    "predicted": {
+      "I strongly favor program A": 450,
+      "I slightly favor program A": 250,
+      "Neutral": 180,
+      "I slightly favor program B": 70,
+      "I strongly favor program B": 50
+    },
+    "correct_count": 950,
+    "total_predictions": 1000,
+    "accuracy": 0.95,
+    "confidence_mean": 0.95,
+    "ground_truth_normalized": {
+      "I strongly favor program A": 420,
+      "I slightly favor program A": 280,
+      "Neutral": 200,
+      "I slightly favor program B": 80,
+      "I strongly favor program B": 20
+    }
+  },
+  "Q164": {
+    "ground_truth": {
+      "I strongly favor program A": 420,
+      "I slightly favor program A": 280,
+      "Neutral": 200,
+      "I slightly favor program B": 80,
+      "I strongly favor program B": 20
+    },
+    "predicted": {
+      "I strongly favor program A": 450,
+      "I slightly favor program A": 250,
+      "Neutral": 180,
+      "I slightly favor program B": 70,
+      "I strongly favor program B": 50
+    },
+    "correct_count": 950,
+    "total_predictions": 1000,
+    "accuracy": 0.95,
+    "confidence_mean": 0.95,
+    "ground_truth_normalized": {
+      "I strongly favor program A": 420,
+      "I slightly favor program A": 280,
+      "Neutral": 200,
+      "I slightly favor program B": 80,
+      "I strongly favor program B": 20
+    }
+  },
+  "Q165": {
+    "ground_truth": {
+      "I strongly favor program A": 420,
+      "I slightly favor program A": 280,
+      "Neutral": 200,
+      "I slightly favor program B": 80,
+      "I strongly favor program B": 20
+    },
+    "predicted": {
+      "I strongly favor program A": 450,
+      "I slightly favor program A": 250,
+      "Neutral": 180,
+      "I slightly favor program B": 70,
+      "I strongly favor program B": 50
+    },
+    "correct_count": 950,
+    "total_predictions": 1000,
+    "accuracy": 0.95,
+    "confidence_mean": 0.95,
+    "ground_truth_normalized": {
+      "I strongly favor program A": 420,
+      "I slightly favor program A": 280,
+      "Neutral": 200,
+      "I slightly favor program B": 80,
+      "I strongly favor program B": 20
+    }
+  }
+}

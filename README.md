@@ -61,6 +61,36 @@ Verify -> verifica contra realidade
 
 ## Testes de lançamento
 
+## Knowledge Retrieval Layers (KRLs)
+
+KRLs são camadas de conhecimento extraídas de ground truth humano e AlphaPrediction. Fornece dados estruturados para APIs, Scenario Lab e Leaderboard.
+
+### Estrutura
+
+- `knowledge/metadata.json` - metadados e estatísticas gerais
+- `knowledge/accuracy.json` - acurácia de previsão por item
+- `knowledge/response_distribution.json` - distribuição de respostas
+- `knowledge/confidence_calibration.json` - calibração de confiança
+- `knowledge/common_patterns.json` - padrões comportamentais
+
+### Geração
+
+```bash
+npm run krl          # gera + testa KRLs
+npm run krl:generate # gera dados
+npm run krl:test     # testa KRLs
+npm run krl:visualize # gera relatórios Markdown + HTML
+```
+
+### Relatórios
+
+- `knowledge/report.md` - relatório formatado (Markdown)
+- `knowledge/report.html` - visualização interativa (HTML)
+
+### Fonte
+
+Atualmente KRLs são gerados com dados mockados baseados no paper "Light Society" (70% favor program A, 30% B) para prototipação. Quando ground truth real estiver disponível, o gerador será atualizado para parsear `events.jsonl` e extrair padrões comportamentais.
+
 ```bash
 node --check server.js
 node tests/ppo.js
