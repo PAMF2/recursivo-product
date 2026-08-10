@@ -68,6 +68,16 @@ function appendActivation(sessionId, route, startedAt) {
   fs.appendFileSync(EVENTS, JSON.stringify(record) + "\n");
 }
 
+function recordActivationOrUnavailable(res, sessionId, route, startedAt) {
+  try {
+    appendActivation(sessionId, route, startedAt);
+    return true;
+  } catch {
+    sendJSON(res, 503, { error: "result temporarily unavailable" });
+    return false;
+  }
+}
+
 function writeJSONAtomic(file, value) {
   fs.mkdirSync(path.dirname(file), { recursive: true });
   const temporary = path.join(path.dirname(file), `.${path.basename(file)}.${process.pid}.${crypto.randomBytes(8).toString("hex")}.tmp`);
@@ -403,7 +413,7 @@ const server = http.createServer(async (req, res) => {
 
     if (route === "/predict") {
       const result = predict(body);
-      appendActivation(sessionId, "/api/predict", requestStartedAt);
+      if (!recordActivationOrUnavailable(res, sessionId, "/api/predict", requestStartedAt)) return;
       return sendJSON(res, 200, result);
     }
 
@@ -430,7 +440,7 @@ const server = http.createServer(async (req, res) => {
     rep.matched_baseline = matchedBaseline(preds, GROUND_TRUTH);
     rep.ranking = rank(rep.individual_accuracy, rep.matched_baseline);
     rep.thesis = "recursion only compounds where the outcome is verifiable";
-    appendActivation(sessionId, "/api/verify", requestStartedAt);
+    if (!recordActivationOrUnavailable(res, sessionId, "/api/verify", requestStartedAt)) return;
     return sendJSON(res, 200, rep);
   }
 
