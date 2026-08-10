@@ -26,6 +26,11 @@ const SUBMISSIONS = process.env.RECURSIVO_SUBMISSIONS_FILE || path.join(RESULTS,
 const EVENTS = process.env.RECURSIVO_EVENTS_FILE || path.join(RESULTS, "events.jsonl");
 const WAITLIST = path.join(DATA, "waitlist.jsonl");
 const API_KEY = (process.env.RECURSIVO_API_KEY || "").trim();
+const RECURSIVO_ENV = process.env.RECURSIVO_ENV;
+const ALLOWED_ENVIRONMENTS = new Set(["development", "test", "production"]);
+if (!ALLOWED_ENVIRONMENTS.has(RECURSIVO_ENV)) {
+  throw new Error("RECURSIVO_ENV must be development, test, or production");
+}
 const RECEIPT_VERSION = "submit-receipt-v1";
 const METRIC_ID = "exact-match+mean-1-TV-v1";
 const GROUND_TRUTH_FILE = "data/ground_truth_wave4.json";
@@ -44,6 +49,21 @@ const SCOREABLE_PAIRS = CANONICAL_ITEMS.reduce((n, item) => n + Object.keys(GROU
 function appendEvent(event, scoredPairs, receiptHash) {
   const record = { timestamp: new Date().toISOString(), event, status: "success", scored_pair_count: scoredPairs };
   if (receiptHash) record.receipt_hash = receiptHash;
+  fs.mkdirSync(path.dirname(EVENTS), { recursive: true });
+  fs.appendFileSync(EVENTS, JSON.stringify(record) + "\n");
+}
+
+function appendActivation(sessionId, route, startedAt) {
+  const elapsedNanoseconds = process.hrtime.bigint() - startedAt;
+  const record = {
+    timestamp: new Date().toISOString(),
+    event: "activation_result",
+    session_id: sessionId,
+    environment: RECURSIVO_ENV,
+    route,
+    latency_ms: Number(elapsedNanoseconds / 1000000n),
+    status: "success",
+  };
   fs.mkdirSync(path.dirname(EVENTS), { recursive: true });
   fs.appendFileSync(EVENTS, JSON.stringify(record) + "\n");
 }
@@ -318,6 +338,7 @@ function sendFile(res, file) {
   });
 }
 const validEmail = (e) => typeof e === "string" && /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(e.trim()) && e.length < 254;
+const validSessionId = (value) => typeof value === "string" && /^[0-9a-f]{8}-[0-9a-f]{4}-4[0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/.test(value);
 
 function readBody(req) {
   return new Promise((resolve, reject) => {
@@ -329,12 +350,13 @@ function readBody(req) {
 }
 
 const server = http.createServer(async (req, res) => {
+  const requestStartedAt = process.hrtime.bigint();
   const u = new URL(req.url, "http://localhost");
   const p = u.pathname.replace(/\/+$/, "") || "/";
   const route = p.replace(/^\/api/, ""); // /api/x and /x both map to x
 
   if (req.method === "OPTIONS") {
-    res.writeHead(204, { "Access-Control-Allow-Origin": "*", "Access-Control-Allow-Methods": "GET,POST,OPTIONS", "Access-Control-Allow-Headers": "Content-Type,X-API-Key" });
+    res.writeHead(204, { "Access-Control-Allow-Origin": "*", "Access-Control-Allow-Methods": "GET,POST,OPTIONS", "Access-Control-Allow-Headers": "Content-Type,X-API-Key,X-Recursivo-Session-ID" });
     return res.end();
   }
 
@@ -361,6 +383,11 @@ const server = http.createServer(async (req, res) => {
       if (!API_KEY) return sendJSON(res, 503, { error: "submissions unavailable: RECURSIVO_API_KEY not configured" });
       if (req.headers["x-api-key"] !== API_KEY) return sendJSON(res, 401, { error: "X-API-Key required" });
     }
+    let sessionId;
+    if (route === "/predict" || route === "/verify") {
+      sessionId = req.headers["x-recursivo-session-id"];
+      if (!validSessionId(sessionId)) return sendJSON(res, 400, { error: "X-Recursivo-Session-ID must be a canonical lowercase UUIDv4" });
+    }
     let body;
     try { body = await readBody(req); } catch (e) { return sendJSON(res, 400, { error: "bad json: " + e.message }); }
 
@@ -376,7 +403,7 @@ const server = http.createServer(async (req, res) => {
 
     if (route === "/predict") {
       const result = predict(body);
-      appendEvent("predict_result", result.n_verified || 0);
+      appendActivation(sessionId, "/api/predict", requestStartedAt);
       return sendJSON(res, 200, result);
     }
 
@@ -403,7 +430,7 @@ const server = http.createServer(async (req, res) => {
     rep.matched_baseline = matchedBaseline(preds, GROUND_TRUTH);
     rep.ranking = rank(rep.individual_accuracy, rep.matched_baseline);
     rep.thesis = "recursion only compounds where the outcome is verifiable";
-    appendEvent("verify_result", rep.n_predictions);
+    appendActivation(sessionId, "/api/verify", requestStartedAt);
     return sendJSON(res, 200, rep);
   }
 

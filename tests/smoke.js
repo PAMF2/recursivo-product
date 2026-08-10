@@ -8,6 +8,7 @@ const os = require("os");
 const path = require("path");
 
 const ROOT = path.join(__dirname, "..");
+const SESSION_ID = "123e4567-e89b-42d3-a456-426614174000";
 const port = 18202;
 const protectedPort = 18203;
 const groundTruth = JSON.parse(fs.readFileSync(path.join(ROOT, "data", "ground_truth_wave4.json"), "utf8"));
@@ -16,6 +17,7 @@ function request(method, route, body, options = {}) {
   return new Promise((resolve, reject) => {
     const payload = body === undefined ? "" : JSON.stringify(body);
     const headers = body === undefined ? {} : { "Content-Type": "application/json", "Content-Length": Buffer.byteLength(payload) };
+    if (["/api/predict", "/api/verify"].includes(route)) headers["X-Recursivo-Session-ID"] = options.sessionId || SESSION_ID;
     if (options.apiKey) headers["X-API-Key"] = options.apiKey;
     const req = http.request({ host: "127.0.0.1", port: options.port || port, path: route, method, headers }, (res) => {
       let data = "";
@@ -191,11 +193,12 @@ async function main() {
     }
     assert.equal(fs.readFileSync(protectedSubmissionsFile, "utf8"), beforeInvalidSubmissions);
     assert.equal(fs.readFileSync(protectedEventsFile, "utf8"), beforeInvalidEvents);
-
     const publicEvents = fs.readFileSync(eventsFile, "utf8").trim().split("\n").map(JSON.parse);
-    assert.deepEqual(publicEvents.map((event) => event.event), ["predict_result", "verify_result"]);
+
+    assert.deepEqual(publicEvents.map((event) => event.event), ["activation_result", "activation_result"]);
+    assert.deepEqual(publicEvents.map((event) => event.route), ["/api/predict", "/api/verify"]);
     const events = fs.readFileSync(protectedEventsFile, "utf8").trim().split("\n").map(JSON.parse);
-    assert.deepEqual(events.map((event) => event.event), ["predict_result", "verify_result", "submit_result", "submit_result"]);
+    assert.deepEqual(events.map((event) => event.event), ["activation_result", "activation_result", "submit_result", "submit_result"]);
     const serializedEvents = JSON.stringify(events);
     for (const forbidden of ["predictions", "answer", "email", "contact", submission.simulator, submission.source_id, ...fixture.map((entry) => entry.answer)]) {
       assert(!serializedEvents.includes(forbidden), `event leaked forbidden value: ${forbidden}`);

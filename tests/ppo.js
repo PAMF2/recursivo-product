@@ -7,10 +7,11 @@ const fs = require("fs");
 const path = require("path");
 
 const ROOT = path.join(__dirname, "..");
+const SESSION_ID = "123e4567-e89b-42d3-a456-426614174000";
 const port = 18203;
 const groundTruth = JSON.parse(fs.readFileSync(path.join(ROOT, "data", "ground_truth_wave4.json"), "utf8"));
 
-function request(method, route, body) {
+function request(method, route, body, options = {}) {
   return new Promise((resolve, reject) => {
     const isObject = body && typeof body === "object";
     const payload = body === undefined ? "" : isObject ? JSON.stringify(body) : String(body);
@@ -18,6 +19,7 @@ function request(method, route, body) {
       "Content-Type": "application/json",
       "Content-Length": Buffer.byteLength(payload),
     };
+    if (["/api/predict", "/api/verify"].includes(route)) headers["X-Recursivo-Session-ID"] = options.sessionId || SESSION_ID;
     const req = http.request({ host: "127.0.0.1", port, path: route, method, headers }, (res) => {
       let data = "";
       res.setEncoding("utf8");
