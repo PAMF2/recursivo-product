@@ -17,6 +17,7 @@ const http = require("http");
 const fs = require("fs");
 const path = require("path");
 const crypto = require("crypto");
+const { runScenario } = require("./scenario-engine");
 
 const ROOT = __dirname;
 const SITE = path.join(ROOT, "site");
@@ -372,10 +373,11 @@ const server = http.createServer(async (req, res) => {
 
   if (req.method === "GET") {
     if (p === "/") return sendFile(res, path.join(SITE, "index.html"));
-    if (route === "/deck") return sendFile(res, path.join(SITE, "deck.html"));
+    if (p === "/scenario") return sendFile(res, path.join(SITE, "scenario.html"));
     if (route === "/health") return sendJSON(res, 200, { status: "ok", items: Object.keys(GROUND_TRUTH).length, majority_baseline: MAJORITY, segments: !!Object.keys(SEGMENTS).length });
     if (route === "/leaderboard") return sendJSON(res, 200, leaderboardResponse());
     if (route === "/items") return sendJSON(res, 200, Object.entries(GROUND_TRUTH).map(([k, v]) => ({ item: k, options: v.opts })));
+    if (route === "/scenario") return sendJSON(res, 200, { engine: "scenario-lab-local-v1", verified: false, limits: { agents: "2-1000", rounds: "1-100" }, usage: "POST /api/scenario/run {topic,agents,rounds,seed}" });
     if (route === "/predict") return sendJSON(res, 200, { usage: "POST /api/predict {item?|question?, options?}", overall: PREDICT_PANEL._overall || {}, known_items: Object.keys(PREDICT_PANEL).filter((k) => k !== "_overall").length });
     // static under site/
     const rel = p.replace(/^\/+/, "");
@@ -383,23 +385,33 @@ const server = http.createServer(async (req, res) => {
       const cand = path.resolve(SITE, rel);
       if (cand.startsWith(path.resolve(SITE)) && fs.existsSync(cand) && fs.statSync(cand).isFile()) return sendFile(res, cand);
     }
-    return sendJSON(res, 404, { routes: ["/", "/deck", "/health", "/api/leaderboard", "/api/items", "/api/predict", "POST /api/verify", "POST /api/submit", "POST /api/early-access"] });
+    return sendJSON(res, 404, { routes: ["/", "/scenario", "/deck", "/health", "/api/leaderboard", "/api/items", "/api/scenario", "/api/predict", "POST /api/verify", "POST /api/submit", "POST /api/early-access"] });
   }
 
   if (req.method === "POST") {
-    const known = ["/verify", "/submit", "/predict", "/early-access"];
-    if (!known.includes(route)) return sendJSON(res, 404, { error: "POST /api/verify, /api/predict, /api/submit or /api/early-access" });
+    const known = ["/verify", "/submit", "/predict", "/scenario/run", "/early-access"];
+    if (!known.includes(route)) return sendJSON(res, 404, { error: "POST /api/verify, /api/predict, /api/scenario/run, /api/submit or /api/early-access" });
     if (route === "/submit") {
       if (!API_KEY) return sendJSON(res, 503, { error: "submissions unavailable: RECURSIVO_API_KEY not configured" });
       if (req.headers["x-api-key"] !== API_KEY) return sendJSON(res, 401, { error: "X-API-Key required" });
     }
     let sessionId;
-    if (route === "/predict" || route === "/verify") {
+    if (["/predict", "/verify", "/scenario/run"].includes(route)) {
       sessionId = req.headers["x-recursivo-session-id"];
       if (!validSessionId(sessionId)) return sendJSON(res, 400, { error: "X-Recursivo-Session-ID must be a canonical lowercase UUIDv4" });
     }
     let body;
     try { body = await readBody(req); } catch (e) { return sendJSON(res, 400, { error: "bad json: " + e.message }); }
+    if (route === "/scenario/run") {
+      let result;
+      try {
+        result = runScenario(body);
+      } catch (error) {
+        return sendJSON(res, 400, { error: error.message });
+      }
+      if (!recordActivationOrUnavailable(res, sessionId, "/api/scenario/run", requestStartedAt)) return;
+      return sendJSON(res, 200, result);
+    }
 
     if (route === "/early-access") {
       const email = (body.email || "").trim().toLowerCase();
