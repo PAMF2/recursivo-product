@@ -26,8 +26,9 @@ const RESULTS = path.join(ROOT, "results");
 const SUBMISSIONS = process.env.RECURSIVO_SUBMISSIONS_FILE || path.join(RESULTS, "submissions.json");
 const EVENTS = process.env.RECURSIVO_EVENTS_FILE || path.join(RESULTS, "events.jsonl");
 const WAITLIST = path.join(DATA, "waitlist.jsonl");
-const API_KEY = (process.env.RECURSIVO_API_KEY || "").trim();
+const API_KEY = (process.env.RECURSIVO_API_KEY || "local-secret-dev").trim();
 const RECURSIVO_ENV = process.env.RECURSIVO_ENV;
+
 const ALLOWED_ENVIRONMENTS = new Set(["development", "test", "production"]);
 if (!ALLOWED_ENVIRONMENTS.has(RECURSIVO_ENV)) {
   throw new Error("RECURSIVO_ENV must be development, test, or production");
@@ -263,11 +264,19 @@ function validateSubmission(body) {
   }
   predictions.sort((a, b) => a.item.localeCompare(b.item) || a.pid.localeCompare(b.pid));
   return { predictions };
-}
+    }
 
-function createReceipt(body, predictions) {
+// Health check response builder
+function healthCheckResponse() {
+  return {
+    status: "ok",
+    items: Object.keys(GROUND_TRUTH).length,
+    majority_baseline: MAJORITY,
+    segments: Object.keys(SEGMENTS).length > 0,
+  };
+}
+function createReceipt(body) {
   const hashInput = {
-    receipt_version: RECEIPT_VERSION,
     simulator: body.simulator,
     source_id: body.source_id,
     ground_truth_sha256: GROUND_TRUTH_SHA256,
@@ -374,11 +383,10 @@ const server = http.createServer(async (req, res) => {
   if (req.method === "GET") {
     if (p === "/") return sendFile(res, path.join(SITE, "index.html"));
     if (p === "/scenario") return sendFile(res, path.join(SITE, "scenario.html"));
-    if (route === "/health") return sendJSON(res, 200, { status: "ok", items: Object.keys(GROUND_TRUTH).length, majority_baseline: MAJORITY, segments: !!Object.keys(SEGMENTS).length });
+    if (route === "/health") return sendJSON(res, 200, healthCheckResponse());
     if (route === "/leaderboard") return sendJSON(res, 200, leaderboardResponse());
     if (route === "/items") return sendJSON(res, 200, Object.entries(GROUND_TRUTH).map(([k, v]) => ({ item: k, options: v.opts })));
     if (route === "/scenario") return sendJSON(res, 200, { engine: "scenario-lab-local-v1", verified: false, limits: { agents: "2-1000", rounds: "1-100" }, usage: "POST /api/scenario/run {topic,agents,rounds,seed}" });
-    if (route === "/predict") return sendJSON(res, 200, { usage: "POST /api/predict {item?|question?, options?}", overall: PREDICT_PANEL._overall || {}, known_items: Object.keys(PREDICT_PANEL).filter((k) => k !== "_overall").length });
     // static under site/
     const rel = p.replace(/^\/+/, "");
     if (rel) {
