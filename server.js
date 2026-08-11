@@ -27,6 +27,7 @@ const SUBMISSIONS = process.env.RECURSIVO_SUBMISSIONS_FILE || path.join(RESULTS,
 const EVENTS = process.env.RECURSIVO_EVENTS_FILE || path.join(RESULTS, "events.jsonl");
 const API_KEY = (process.env.RECURSIVO_API_KEY || "local-secret-dev").trim();
 
+const RECURSIVO_ENV = process.env.RECURSIVO_ENV || "test";
 const ALLOWED_ENVIRONMENTS = new Set(["development", "test", "production"]);
 if (!ALLOWED_ENVIRONMENTS.has(RECURSIVO_ENV)) {
   throw new Error("RECURSIVO_ENV must be development, test, or production");
