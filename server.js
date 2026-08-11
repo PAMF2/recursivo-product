@@ -25,9 +25,7 @@ const DATA = path.join(ROOT, "data");
 const RESULTS = path.join(ROOT, "results");
 const SUBMISSIONS = process.env.RECURSIVO_SUBMISSIONS_FILE || path.join(RESULTS, "submissions.json");
 const EVENTS = process.env.RECURSIVO_EVENTS_FILE || path.join(RESULTS, "events.jsonl");
-const WAITLIST = path.join(DATA, "waitlist.jsonl");
 const API_KEY = (process.env.RECURSIVO_API_KEY || "local-secret-dev").trim();
-const RECURSIVO_ENV = process.env.RECURSIVO_ENV;
 
 const ALLOWED_ENVIRONMENTS = new Set(["development", "test", "production"]);
 if (!ALLOWED_ENVIRONMENTS.has(RECURSIVO_ENV)) {
@@ -400,7 +398,7 @@ const server = http.createServer(async (req, res) => {
     const known = ["/verify", "/submit", "/predict", "/scenario/run", "/early-access"];
     if (!known.includes(route)) return sendJSON(res, 404, { error: "POST /api/verify, /api/predict, /api/scenario/run, /api/submit or /api/early-access" });
     if (route === "/submit") {
-      if (!API_KEY) return sendJSON(res, 503, { error: "submissions unavailable: RECURSIVO_API_KEY not configured" });
+      if (!API_KEY || API_KEY === "") return sendJSON(res, 503, { error: "submissions unavailable: RECURSIVO_API_KEY not configured" });
       if (req.headers["x-api-key"] !== API_KEY) return sendJSON(res, 401, { error: "X-API-Key required" });
     }
     let sessionId;
