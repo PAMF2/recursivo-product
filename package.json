@@ -1,0 +1,44 @@
+{
+  "name": "recursivo-product",
+  "version": "1.0.0",
+  "description": "Recursivo Product - Validated prediction framework",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.cjs",
+    "dev": "node --watch server.js",
+    "test": "node tests/acceptance.js",
+    "test:krl": "node scripts/krl/test.js",
+    "test:smoke": "node tests/smoke.js",
+    "test:edge": "node tests/edge-cases.js",
+    "test:performance": "node tests/performance.js",
+    "test:all": "npm run test && npm run test:krl && npm run test:smoke && npm run test:edge && npm run test:performance",
+    "test:watch": "node --watch tests/acceptance.js",
+    "build": "echo 'No build step required'",
+    "lint": "eslint server.js scripts/ --ext .js --ignore-pattern 'node_modules/' --ignore-pattern 'tests/'",
+    "format": "prettier --write 'server.js scripts/**/*.js'",
+    "krl:generate": "node scripts/krl/generate.js",
+    "krl:test": "node scripts/krl/test.js",
+    "krl:visualize": "node scripts/krl/visualize.js",
+    "krl:report": "node scripts/krl/generate.js && node scripts/krl/visualize.js",
+    "scenario:generate": "node scripts/scenario-lab/generate.js",
+    "scenario:hash": "node scripts/scenario-lab/hash.js"
+  },
+  "keywords": [
+    "prediction",
+    "simulation",
+    "validation",
+    "krl",
+    "scenario-lab"
+  ],
+  "author": "",
+  "license": "MIT",
+  "dependencies": {
+    "express": "^4.18.2",
+    "cors": "^2.8.5",
+    "uuid": "^9.0.1"
+  },
+  "devDependencies": {
+    "eslint": "^8.55.0",
+    "prettier": "^3.1.1"
+  }
+}

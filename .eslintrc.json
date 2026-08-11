@@ -1,0 +1,32 @@
+{
+  "env": {
+    "node": true,
+    "es2021": true,
+    "mocha": true
+  },
+  "extends": ["eslint:recommended"],
+  "parserOptions": {
+    "ecmaVersion": "latest",
+    "sourceType": "module"
+  },
+  "rules": {
+    "indent": ["error", 2],
+    "linebreak-style": ["error", "unix"],
+    "quotes": ["error", "single"],
+    "semi": ["error", "always"],
+    "no-unused-vars": ["warn"],
+    "no-console": ["warn", { "allow": ["warn", "error"] }],
+    "prefer-const": "error",
+    "eqeqeq": ["error", "always"],
+    "curly": ["error", "all"],
+    "no-var": "error",
+    "object-shorthand": "error",
+    "arrow-body-style": ["error", "as-needed"]
+  },
+  "ignorePatterns": [
+    "node_modules/",
+    "tests/",
+    "*.min.js",
+    "scripts/krl/data/"
+  ]
+}
