@@ -2,9 +2,9 @@ name: Recursivo Product CI
 
 on:
   push:
-    branches: ['agents/product-build']
+    branches: ['main', 'agents/product-build']
   pull_request:
-    branches: ['agents/product-build']
+    branches: ['main', 'agents/product-build']
 
 jobs:
   lint-and-typecheck:
