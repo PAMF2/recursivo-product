@@ -400,7 +400,8 @@ const server = http.createServer(async (req, res) => {
     if (!known.includes(route)) return sendJSON(res, 404, { error: "POST /api/verify, /api/predict, /api/scenario/run, /api/submit or /api/early-access" });
     if (route === "/submit") {
       if (!API_KEY || API_KEY === "") return sendJSON(res, 503, { error: "submissions unavailable: RECURSIVO_API_KEY not configured" });
-      if (req.headers["x-api-key"] !== API_KEY) return sendJSON(res, 401, { error: "X-API-Key required" });
+      if (!req.headers["x-api-key"]) return sendJSON(res, 503, { error: "submissions unavailable: X-API-Key required" });
+      if (req.headers["x-api-key"] !== API_KEY) return sendJSON(res, 401, { error: "Invalid X-API-Key" });
     }
     let sessionId;
     if (["/predict", "/verify", "/scenario/run"].includes(route)) {
