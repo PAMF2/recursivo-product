@@ -4,15 +4,15 @@
   "description": "Recursivo Product - Validated prediction framework",
   "main": "server.js",
   "scripts": {
-    "start": "node server.cjs",
+    "start": "node server.js",
     "dev": "node --watch server.js",
-    "test": "node tests/acceptance.js",
+    "test": "node tests/ppo.js && node tests/activation.js && node tests/result-path.js && node tests/scenario.js && node tests/smoke.js",
     "test:krl": "node scripts/krl/test.js",
     "test:smoke": "node tests/smoke.js",
     "test:edge": "node tests/edge-cases.js",
     "test:performance": "node tests/performance.js",
-    "test:all": "npm run test && npm run test:krl && npm run test:smoke && npm run test:edge && npm run test:performance",
-    "test:watch": "node --watch tests/acceptance.js",
+    "test:all": "npm run test && npm run test:krl",
+    "test:watch": "node --watch tests/smoke.js",
     "build": "echo 'No build step required'",
     "lint": "eslint server.js scripts/ --ext .js --ignore-pattern 'node_modules/' --ignore-pattern 'tests/'",
     "format": "prettier --write 'server.js scripts/**/*.js'",
@@ -32,11 +32,7 @@
   ],
   "author": "",
   "license": "MIT",
-  "dependencies": {
-    "express": "^4.18.2",
-    "cors": "^2.8.5",
-    "uuid": "^9.0.1"
-  },
+  "dependencies": {},
   "devDependencies": {
     "eslint": "^8.55.0",
     "prettier": "^3.1.1"
